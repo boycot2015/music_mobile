@@ -1,0 +1,25 @@
+.swiper {
+    width: calc(100% - 30px);
+    margin: 0 15px 15px;
+    &-item {
+        height: 120px;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 48px;
+        user-select: none;
+        position: relative;
+        .title {
+            position:absolute;
+            right: 0px;
+            bottom: 0px;
+            padding: 0 15px;
+            border-radius: var(--border-radius) 0 var(--border-radius) 0;
+            font-size: var(--size-12);
+            line-height: var(--size-20);
+            color: var(--color-white);
+            background-color: var(--primary-color);
+        }
+    }
+}
