@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Grid, Button } from 'antd-mobile'
+import { Grid, DotLoading } from 'antd-mobile'
 import {
     useLocation,
   } from 'react-router-dom'
@@ -30,8 +30,8 @@ function CustomList() {
             }
         })
     }, [])
-    return <div className='home'>
-        <Grid
+    return <div className='custom-list' style={{"minHeight": 300}}>
+        {state.data && state.data.length ? <Grid
             columns={location.state.type === 1 ? 2 : 3}
             style={{
                 padding: '0 15px'
@@ -44,7 +44,7 @@ function CustomList() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <DotLoading color='primary' />}
     </div>
 }
 export default CustomList

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Grid, Button } from 'antd-mobile'
+import { Grid, Button, Skeleton } from 'antd-mobile'
 import Banner from './components/banner'
 import CategoryItem from './components/CategoryItem'
 import {
@@ -12,7 +12,6 @@ import {
     HistogramOutline,
     CalendarOutline,
     FileOutline,
-    AntOutline,
     HeartOutline,
     MovieOutline
 } from 'antd-mobile-icons'
@@ -68,12 +67,11 @@ function Home() {
         />
 
         {/* 金刚区 */}
-        <div className="category-list flexbox-h algin-c just-c" style={{padding: '0 15px'}}>
+        {state.categoryList.length ? <div className="category-list flexbox-h algin-c just-c" style={{padding: '0 15px'}}>
             {
                 state.categoryList.map((category, index) => <CategoryItem key={index} data={category} />)
             }
-        </div>
-
+        </div> : <Skeleton animated className={'customSkeleton'} />}
         {/* 推荐歌单 */}
         <h3 className='title clearfix'>
             推荐歌单
@@ -81,7 +79,7 @@ function Home() {
                 更多 <RightOutline />
             </Button>
         </h3>
-        <Grid
+        {state.recommand.length ? <Grid
             columns={3}
             style={{
                 padding: '0 15px'
@@ -94,7 +92,7 @@ function Home() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <Skeleton animated className={'customSkeleton'} />}
 
         {/* 云村出品 */}
         <h3 className='title clearfix'>
@@ -103,7 +101,7 @@ function Home() {
                 更多 <RightOutline />
             </Button>
         </h3>
-        <Grid
+        {state.privatecontent.length ? <Grid
             columns={2}
             style={{
                 padding: '0 15px'
@@ -116,7 +114,7 @@ function Home() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <Skeleton animated className={'customSkeleton'} />}
 
         {/* 超级歌单 */}
         <h3 className='title clearfix'>
@@ -125,7 +123,7 @@ function Home() {
                 更多 <RightOutline />
             </Button>
         </h3>
-        <Grid
+        {state.recommand.length ? <Grid
             columns={3}
             style={{
                 padding: '0 15px'
@@ -138,7 +136,7 @@ function Home() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <Skeleton animated className={'customSkeleton'} />}
 
         {/* 宝藏曲库 */}
         <h3 className='title clearfix'>
@@ -147,7 +145,7 @@ function Home() {
                 更多 <RightOutline />
             </Button>
         </h3>
-        <Grid
+        {state.privatecontent.length ? <Grid
             columns={2}
             style={{
                 padding: '0 15px'
@@ -160,7 +158,7 @@ function Home() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <Skeleton animated className={'customSkeleton'} />}
 
         {/* 猜你喜欢 */}
         <h3 className='title clearfix'>
@@ -169,7 +167,7 @@ function Home() {
                 更多 <RightOutline />
             </Button>
         </h3>
-        <Grid
+        {state.recommand.length ? <Grid
             columns={3}
             style={{
                 padding: '0 15px'
@@ -182,7 +180,7 @@ function Home() {
                   </Grid.Item>
                   )
              }
-        </Grid>
+        </Grid> : <Skeleton animated className={'customSkeleton'} />}
     </div>
 }
 export default Home
