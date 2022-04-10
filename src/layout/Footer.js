@@ -15,7 +15,7 @@ const Footer = () => {
   }
   const currentRoute = routes.filter(el => el.key === pathname)[0]
   const tabs = routes.filter(el => el.showInTabBar)
-  if (currentRoute.hideTabBar) return null
+  if (currentRoute && currentRoute.hideTabBar) return null
   return (
     <TabBar className={'music-footer'} activeKey={pathname} onChange={value => setRouteActive(value)}>
       {tabs.map(item => (

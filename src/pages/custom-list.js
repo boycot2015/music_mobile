@@ -10,32 +10,36 @@ function CustomList() {
         data: []
     })
     const location = useLocation()
-    console.log(location, 'location')
-
+    const { state: query } = location
+    let hasFetch = false // 防止多次渲染
     useEffect(() => {
-        !location.state.type && getPersonalized().then(res => {
-            if (res.code === 200) {
-                setState({
-                    ...state,
-                    data: res.result
-                })
-            }
-        })
-        location.state.type === 1 && getPrivatecontentList().then(res => {
-            if (res.code === 200) {
-                setState({
-                    ...state,
-                    data: res.result
-                })
-            }
-        })
+        const fetchData = async () => {
+            !query.type && getPersonalized().then(res => {
+                if (res.code === 200) {
+                    setState({
+                        ...state,
+                        data: res.result
+                    })
+                }
+            })
+            query.type === 1 && getPrivatecontentList().then(res => {
+                if (res.code === 200) {
+                    setState({
+                        ...state,
+                        data: res.result
+                    })
+                }
+            })
+        }
+        !hasFetch && fetchData();
+        hasFetch = true
     }, [])
     return <div className='custom-list' style={{"minHeight": 300}}>
         {state.data && state.data.length ? <Grid
             columns={location.state.type === 1 ? 2 : 3}
             style={{
                 padding: '0 15px'
-            }} className={'music-list-grid'}
+            }} className={'music-grid'}
             gap={8}>
              {
                  state.data.map(el =>

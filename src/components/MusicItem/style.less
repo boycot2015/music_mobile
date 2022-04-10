@@ -39,5 +39,45 @@
                 height: 70px;
             }
         }
+        &.type-2 {
+            // display: flex;
+            // align-items: center;
+            // justify-content: space-between;
+            width: 100%;
+            overflow: hidden;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--color-border);
+            .text {
+                float: left;
+                max-width: 350px;
+                .name {
+                    margin-top: 0;
+                    font-size: var(--size-18);
+                    color: var(--color-333);
+                }
+                .description {
+                    font-size: var(--size-14);
+                    color: var(--color-999);
+                }
+            }
+            .img {
+                float: left;
+                margin-right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+            .index {
+                float: left;
+                line-height: 40px;
+                font-weight: bold;
+                color: var(--color-999);
+                margin-right: 10px;
+            }
+        }
+    }
+    .adm-grid-item:last-child {
+        .music-grid-item {
+            border-bottom: 0;
+        }
     }
 }

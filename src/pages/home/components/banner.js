@@ -1,8 +1,9 @@
 
 import React, { useRef, useImperativeHandle, useState, useEffect } from 'react'
-import { Swiper, Toast, Image } from 'antd-mobile'
+import { Swiper, Toast, Image, Skeleton } from 'antd-mobile'
 import './banner.less'
 import { getBanner } from '@/api/home'
+// import { useDataApi } from '@/utils/useApi'
 const randomColor = () => {
     let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f']
     let str = '#'
@@ -13,27 +14,35 @@ const randomColor = () => {
 }
 function Banner(props, homeRef) {
     // const colors = [randomColor(), randomColor(), randomColor(), randomColor()]
+    let hasFetch = false // 防止多次渲染
     const [state, setState] = useState({
-        banners: props.data || []
+        banners: []
     })
     useEffect(() => {
-        !props.data && getBanner().then(res => {
-            if (res.code === 200) {
-                setState({
-                    ...state,
-                    banners: res.banners
-                })
+        const fetchData = async () => {
+            try {
+                const res = await getBanner()
+                if (res.code === 200) {
+                    setState({
+                        ...state,
+                        banners: res.banners
+                    })
+                }
+            } catch (error) {
+                console.log(error);
             }
-        })
+          };
+        !hasFetch && fetchData();
+        hasFetch = true
     }, [])
-    const SwiperRef = useRef(null)
-    homeRef.current && useImperativeHandle(homeRef, () => ({
-        swipePrev: SwiperRef.current?.swipePrev,
-        swipeNext: SwiperRef.current?.swipeNext,
-    }))
+    // const SwiperRef = useRef(null)
+    // homeRef.current && useImperativeHandle(homeRef, () => ({
+    //     swipePrev: SwiperRef.current?.swipePrev,
+    //     swipeNext: SwiperRef.current?.swipeNext,
+    // }))
     return <div className={'swiper'}>
-        <Swiper
-        ref={SwiperRef}
+        {state.banners.length ? <Swiper
+        // ref={SwiperRef}
         autoplay
         loop
         indicatorProps={{
@@ -71,8 +80,8 @@ function Banner(props, homeRef) {
                 }}>{banner.typeTitle}</div>
               </div>
             </Swiper.Item>
-          ))}</Swiper>
+          ))}</Swiper> : <Skeleton />}
             {props.children}
-        </div>
+    </div>
 }
 export default React.memo(Banner)
