@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis } from 'antd-mobile'
+import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis, Popup } from 'antd-mobile'
 import {
     useLocation,
   } from 'react-router-dom'
 import MusicItem from '@/components/MusicItem'
 import { getPlaylistDetail, getSongDetail } from '@/api/song'
+import Player from '@/components/Player'
 import './style.less'
 function CustomList() {
     const location = useLocation()
     const { state: query } = location
     const [loading, setLoading] = useState(true)
+    const [showPlayer, setPlayer] = useState(false)
     const [state, setState] = useState({
         coverDetail: {},
+        playDetail: '',
         playlists: []
     })
     let hasFetch = false // 防止多次渲染
@@ -51,16 +54,29 @@ function CustomList() {
             columns={1}
             style={{
                 padding: '0 15px'
-            }} className={'music-list-grid'}
+            }} className={'music-grid'}
             gap={8}>
              {
                  state.playlists.map((el, index) =>
                  <Grid.Item key={el.id}>
-                    <MusicItem data={el} index={index + 1} type={2} />
+                    <MusicItem data={el} showPlayer={() => {
+                        setPlayer(true)
+                        setState({
+                            ...state,
+                            playDetail: el
+                        })
+                    }} index={index + 1} type={2} />
                   </Grid.Item>
                   )
              }
         </Grid> : <DotLoading color='primary' />}
+        <Popup
+            visible={showPlayer}
+            onMaskClick={() => {
+            setPlayer(false)
+          }}>
+            <Player setPlayer={(val) => setPlayer(val)} {...(state.playDetail || state.playlists[0])} />
+        </Popup>
     </div>
 }
 export default CustomList

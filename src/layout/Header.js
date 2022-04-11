@@ -20,24 +20,26 @@ function Header() {
     if (!currentRoute || currentRoute.hideNavBar) return null
     const title = (state !== null && state.title) || currentRoute.title
   return (
-    <NavBar className="music-header"
-    backArrow={pathname !== '/home'}
-    back={pathname !== '/home' ? '' : <UnorderedListOutline />}
-    right={pathname !== '/home' ? '' : <AudioOutline />}
-    onBack={() => navigate(-1)}>
-        {pathname !== '/home' ? title : '' }
-        {/* <img src={logo} className="music-logo" alt="logo" /> */}
-        {pathname === '/home' && <SearchBar
-            placeholder='搜索音乐、歌手、歌单'
-            style={{
-            //   '--background': '#ffffff',
-            '--border-radius': '50px',
-              padding: '0 15px',
-              margin: '15px 0'
-           }}
-        />}
+    <div className="music-header">
+        <NavBar className="music-header"
+        backArrow={pathname !== '/home'}
+        back={pathname !== '/home' ? '' : <UnorderedListOutline style={{'fontSize': 24}} />}
+        right={pathname !== '/home' ? '' : <AudioOutline style={{'fontSize': 24}} />}
+        onBack={() => navigate(-1)}>
+            {pathname !== '/home' ? title : '' }
+            {/* <img src={logo} className="music-logo" alt="logo" /> */}
+            {pathname === '/home' && <SearchBar
+                placeholder='搜索音乐、歌手、歌单'
+                style={{
+                //   '--background': '#ffffff',
+                '--border-radius': '50px',
+                padding: '0 15px',
+                margin: '15px 0'
+            }}
+            />}
 
-    </NavBar>
+        </NavBar>
+    </div>
   );
 }
 
