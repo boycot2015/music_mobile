@@ -7,7 +7,7 @@ import MusicItem from '@/components/MusicItem'
 import { getPlaylistDetail, getSongDetail } from '@/api/song'
 import Player from '@/components/Player'
 import './style.less'
-function CustomList() {
+function CustomList(props) {
     const location = useLocation()
     const { state: query } = location
     const [loading, setLoading] = useState(true)
@@ -21,7 +21,7 @@ function CustomList() {
     useEffect(() => {
         const fetchData = () => {
             setLoading(true)
-            getPlaylistDetail({id: query.id, type: 1}).then(list => {
+            getPlaylistDetail({id: query.id || props.id, type: 1}).then(list => {
                 if (list.code === 200) {
                     let ids = list.playlist?.trackIds?.map(el => el.id) || []
                     getSongDetail({ ids: ids.join(',') }).then(res => {
@@ -40,8 +40,15 @@ function CustomList() {
         !hasFetch && fetchData();
         hasFetch = true
     }, [])
-    return <div className='song-list flexbox-v' style={{"minHeight": 300}}>
-        {state.coverDetail.coverImgUrl ? <div className='cover-main'>
+    const setPlayList = (el) => {
+        setPlayer(true)
+        setState({
+            ...state,
+            playDetail: el
+        })
+    }
+    return <div className='song-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
+        {state.coverDetail.coverImgUrl &&  !props.id ? <div className='cover-main'>
             <div className="cover-bg"></div>
             <Image className='img' src={state.coverDetail.coverImgUrl} />
             <div className="cover-text">
@@ -59,23 +66,18 @@ function CustomList() {
              {
                  state.playlists.map((el, index) =>
                  <Grid.Item key={el.id}>
-                    <MusicItem data={el} showPlayer={() => {
-                        setPlayer(true)
-                        setState({
-                            ...state,
-                            playDetail: el
-                        })
-                    }} index={index + 1} type={2} />
+                    <MusicItem data={el} showPlayer={() => setPlayList(el)} index={index + 1} type={2} />
                   </Grid.Item>
                   )
              }
         </Grid> : <DotLoading color='primary' />}
         <Popup
             visible={showPlayer}
+            destroyOnClose
             onMaskClick={() => {
             setPlayer(false)
           }}>
-            <Player setPlayer={(val) => setPlayer(val)} {...(state.playDetail || state.playlists[0])} />
+            <Player setPlayer={(val) => setPlayer(val)} {...(state.playDetail || state.playlists[0])} setPlayList={(el) => setPlayList(el)} />
         </Popup>
     </div>
 }
