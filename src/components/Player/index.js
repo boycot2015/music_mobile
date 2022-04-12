@@ -192,7 +192,6 @@ function Player(props) {
         </div>
         <Popup
             visible={showPlayList}
-            destroyOnClose
             onMaskClick={() => {
                 setShowPlayList(false)
           }}>
@@ -200,9 +199,9 @@ function Player(props) {
             style={{maxHeight: 500, overflowY: 'auto', padding: '20px 0', textAlign: 'center'}}
             setPlayer={(val) => setShowPlayList(val)}
             setPlayList={(show, val, playlists) => {
+                setShowPlayList(false)
                 audioRef.current.pause()
                 props.setPlayList && props.setPlayList(state.playlists)
-                setShowPlayList(false)
             }} />
         </Popup>
     </div> : <DotLoading style={{'color': 'var(--color-white)'}} />

@@ -73,7 +73,6 @@ function CustomList(props) {
         </Grid> : <DotLoading color='primary' />}
         <Popup
             visible={showPlayer}
-            destroyOnClose
             onMaskClick={() => {
             setPlayer(false)
           }}>
