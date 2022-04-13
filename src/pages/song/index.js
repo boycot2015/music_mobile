@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis, Popup } from 'antd-mobile'
 import {
     useLocation,
@@ -32,6 +34,7 @@ function CustomList(props) {
                                 coverDetail: list.playlist,
                                 playlists: res.songs
                             })
+                            props.onSetSongs(res.songs)
                         }
                     })
                 }
@@ -40,11 +43,9 @@ function CustomList(props) {
         !hasFetch && fetchData();
         hasFetch = true
     }, [])
-    const setPlayList = (el) => {
-        setPlayer(true)
-        setState({
-            ...state,
-            playDetail: el
+    const setPlayDetail = (el) => {
+        props.onChangeSong(el.id).then(res => {
+            setPlayer(true)
         })
     }
     return <div className='song-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
@@ -66,7 +67,7 @@ function CustomList(props) {
              {
                  state.playlists.map((el, index) =>
                  <Grid.Item key={el.id}>
-                    <MusicItem data={el} showPlayer={() => setPlayList(el)} index={index + 1} type={2} />
+                    <MusicItem data={el} showPlayer={() => setPlayDetail(el)} index={index + 1} type={2} />
                   </Grid.Item>
                   )
              }
@@ -76,8 +77,8 @@ function CustomList(props) {
             onMaskClick={() => {
             setPlayer(false)
           }}>
-            <Player setPlayer={(val) => setPlayer(val)} {...(state.playDetail || state.playlists[0])} setPlayList={(el) => setPlayList(el)} />
+            <Player setPlayer={(val) => setPlayer(val)} />
         </Popup>
     </div>
 }
-export default CustomList
+export default connect(mapStateToProps, mapDispatchToProps)(CustomList)

@@ -1,5 +1,6 @@
 
 function calculateDaysBetweenDates(begin, end) {
+
 }
 
 

@@ -1,6 +1,6 @@
 .player {
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--color-ccc);
     .mask {
         position: absolute;
         width: 100%;
@@ -36,16 +36,39 @@
             .img {
                 border-radius: 100%;
                 overflow: hidden;
-                animation-play-state: running;
                 animation: rotate-animate 60s linear infinite;
+                animation-play-state: running;
+                &.pause {
+                    animation-play-state: paused;
+                }
             }
         }
         .lyric-cover {
             width: 100%;
             position: relative;
+            // &::before {
+            //     position: absolute;
+            //     top: 0;
+            //     left: 0;
+            //     width: 100%;
+            //     height: 30px;
+            //     content: '';
+            //     background: linear-gradient(to bottom, transparent, #ccc);
+            //     box-shadow: 0 0 3px #ccc;
+            // }
+            // &::after {
+            //     position: absolute;
+            //     bottom: -2px;
+            //     left: 0;
+            //     width: 100%;
+            //     height: 30px;
+            //     content: '';
+            //     background: linear-gradient(to bottom, transparent, #ccc);
+            //     box-shadow: 0 0 3px #ccc;
+            // }
         }
         .lyric {
-            height: 400px;
+            height: 480px;
             overflow: hidden;
             overflow-y: auto;
             top: 30px;
@@ -54,11 +77,11 @@
             &-item {
                 width: 100%;
                 padding: 0 15px;
-                line-height: 22px;
+                line-height: 24px;
                 margin-bottom: 10px;
                 flex-wrap: wrap;
                 word-break: break-all;
-                font-size: var(--size-14);
+                font-size: var(--size-16);
                 color: var(--color-white);
             }
         }
@@ -75,6 +98,12 @@
         .progress-bar {
             width: 100%;
             padding: 0 15px;
+            .time {
+                margin-top: 5px;
+                padding: 0 15px;
+                font-size: var(--size-14);
+                color: var(--color-white);
+            }
         }
         @keyframes rotate-animate {
             0% {
@@ -97,38 +126,17 @@
             margin: 0 25px;
             color: var(--color-white);
         }
-        .prev-icon {
-            transform: rotate(-270deg);
-        }
-        .next-icon {
-            transform: rotate(270deg);
-        }
         .play-icon {
-            padding: 10px 11px;
+            padding: 10px;
             font-size: 20px;
             line-height: 20px;
             border: 2px solid var(--color-white);
             border-radius: 100%;
-            &.play {
-                padding: 10px 16px;
-            }
         }
         .prev-icon,
         .next-icon {
             font-size: 28px;
             position: relative;
-            &::after {
-                content: '';
-                position: absolute;
-                left: 13px;
-                top: 0;
-                width: 2px;
-                height: 80%;
-                top: 60%;
-                transform: rotate(270deg);
-                margin-top: -30%;
-                background-color: var(--color-white);
-            }
         }
     }
 }

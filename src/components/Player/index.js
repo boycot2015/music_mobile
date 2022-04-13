@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import {
     getPlayLyric,
     getComment,
@@ -7,7 +9,7 @@ import {
     getSongUrl
 } from '@/api/song'
 import './style.less'
-import { Popup, Button, DotLoading, Image, NavBar } from 'antd-mobile'
+import { Popup, Toast, DotLoading, Image, NavBar } from 'antd-mobile'
 import {
     useNavigate,
     useLocation
@@ -23,56 +25,68 @@ import {
     ArrowDownCircleOutline,
     HeartOutline,
     DownOutline,
-    HistogramOutline,
     DownFill,
     UnorderedListOutline,
     LoopOutline,
     PlayOutline
 } from 'antd-mobile-icons'
+import {
+    PauseOutlined,
+    StepBackwardFilled,
+    StepForwardFilled
+} from '@ant-design/icons'
 function Player(props) {
-    console.log(props, 'props');
+    // console.log(props, 'props');
+    const { onPauseOrPlay } = props;
+    const { song, songs, showStatus, isPlay, onChangeShowStatus } = props;
+    const currentSong = songs.find(item => item.id === song.id);
     const audioRef = useRef()
     const location = useLocation()
     const { state: query } = location
     const [loading, setLoading] = useState(true)
     const [showLyric, setShowLyric] = useState(false)
     const [showPlayer, setShowPlayer] = useState(true)
-    const [isPlay, setIsPlay] = useState(true)
     const [showPlayList, setShowPlayList] = useState(false)
     const [state, setState] = useState({
-        coverDetail: { },
+        coverDetail: { ...songs.filter(el => song.id === el.id)[0] },
         lyric: [],
         playUrl: '',
         playlists: [],
         playerIcons: [{
             key: 'order',
-            icon: () => <LoopOutline />,
+            icon: <LoopOutline />,
             title: '循环播放'
         },
         {
-            icon: () => <DownFill />,
+            icon: <StepBackwardFilled />,
             key: 'prev',
             className: 'prev-icon',
             title: '上一首'
         },
         {
-            icon: (isPlay) => !isPlay ? <PlayOutline /> : '||',
+            icon: '',
             key: 'play',
             className: 'play-icon',
             title: '播放/暂停'
         },
         {
-            icon: () => <DownFill />,
+            icon: <StepForwardFilled />,
             key: 'next',
             className: 'next-icon',
             title: '下一首'
         },
         {
-            icon: () => <UnorderedListOutline />,
+            icon: <UnorderedListOutline />,
             key: 'list',
             className: 'list-icon',
             title: '播放列表'
-        }]
+        }],
+        audioData: {
+            volume: 0.5,
+            showVolume: false,
+            duration: 0,
+            currentTime: 0,
+        }
     })
     let hasFetch = false // 防止多次渲染
     useEffect(() => {
@@ -80,31 +94,61 @@ function Player(props) {
             setLoading(true)
             setShowPlayer(true)
             setShowLyric(false)
-            getPlayLyric({ id: props.id }).then(lyricRes => {
+            getPlayLyric({ id: song.id }).then(lyricRes => {
                 if (lyricRes.code === 200) {
-                    getSongUrl({ id: props.id }).then(res => {
-                        setLoading(false)
-                        if (res.code === 200) {
-                            let lyricList = lyricRes.lrc?.lyric?.split('\n') || []
-                            console.log(lyricRes, lyricList, 'lyricRes');
-                            let lyric = lyricList.map(el => ({
-                                time: el.split(' ')[0]?.split(']')[0]?.split('[')[1]?.split(':')[1],
-                                text: el.replace(/\s*/g, "").split(']')[1]
-                            })).filter(el => el.text)
-                            setState({
-                                ...state,
-                                lyric,
-                                playUrl: res?.data[0]?.url
-                            })
-                        }
-                    })
                     setLoading(false)
+                    let lyricList = lyricRes.lrc?.lyric?.split('\n') || []
+                    let lyric = lyricList.map(el => ({
+                        time: el.split(' ')[0]?.split(']')[0]?.split('[')[1]?.split(':')[1],
+                        text: el.replace(/\s*/g, "").split(']')[1]
+                    })).filter(el => el.text)
+                    setState({
+                        ...state,
+                        coverDetail: { ...songs.filter(el => song.id === el.id)[0] },
+                        lyric
+                    })
                 }
             })
         }
         !hasFetch && fetchData();
         hasFetch = true
-    }, [props.id])
+    }, [song.url])
+    const initAudio = () => {
+        let audio = audioRef.current;
+        if (!audio) return
+        // 结束-自动播放下一首
+        audio.onended = () => {
+            onStepSong();
+        }
+        // 暂停
+        audio.onpause = () => {
+            onPauseOrPlay(false);
+        }
+        // 播放
+        audio.onplay = () => {
+            setState({
+                ...state,
+                audioData: {
+                    ...state.audioData,
+                    currentTime: audio.currentTime,
+                    duration: audio.duration
+                }
+            });
+            audio.volume = state.audioData.volume
+            onPauseOrPlay(true);
+        }
+        // timeupdate Event
+        audio.ontimeupdate = () => {
+            setState({
+                ...state,
+                audioData: {
+                    ...state.audioData,
+                    currentTime: audio.currentTime,
+                    duration: audio.duration,
+                }
+            });
+        }
+    }
     const handlePlay = (type) => {
         switch (type.key) {
             case 'play':
@@ -126,32 +170,43 @@ function Player(props) {
     }
     const Play = (val) => {
         if (val) {
-            let currentIndex = state.playlists.findIndex(el => el.id === state.coverDetail.id)
-            setIsPlay(true)
-            audioRef.current.play()
-            if (currentIndex) {
-                setState({
-                    ...state,
-                    coverDetail: val === 'prev' ? state.playlists[currentIndex - 1] : state.playlists[currentIndex + 1]
-                })
-            } else {
-                setIsPlay(false)
-                audioRef.current.pause()
-            }
-            return
+            onStepSong('', val === 'next')
+        } else {
+            isPlay ? audioRef.current.pause() : audioRef.current.play()
         }
-        setIsPlay(!isPlay)
-        isPlay ? audioRef.current.pause() : audioRef.current.play()
     }
     const changeOrder = () => {
 
     }
-
+    const onStepSong =  (currentSongIndex, next = true) => {
+        // * 赋值则递归调用，否则进行初始化操作
+        if (!currentSongIndex) {
+            currentSongIndex = songs.findIndex((item) => item.id === song.id);
+        }
+        const step = next ? 1 : -1;
+        const nextSong = songs[currentSongIndex + step];
+        // 超出数组边界
+        if (!nextSong) return Toast.show('没歌放了喔(⊙_⊙)');
+        props.onChangeSong(nextSong.id)
+        .then(res => {
+            if (res) {
+                setState({
+                    ...state,
+                    coverDetail: nextSong
+                })
+                audioRef.current.play()
+            } else {
+                // * 无权播放歌曲 继续播放下一首/上一首
+                onStepSong(++currentSongIndex, next);
+            }
+            })
+    }
+    const { coverDetail } = state
     return !loading ? <div  className="player music-main flexbox-v align-c">
         <div
             className="mask"
             style={{
-                backgroundImage: `url(${(props.al)?.picUrl})`
+                backgroundImage: `url(${(coverDetail.al)?.picUrl})`
             }}>
         </div>
         <div className="player-header">
@@ -167,26 +222,29 @@ function Player(props) {
             }} />}
             backArrow={false}>
                 <p className="name">
-                    {props.name}
+                    {coverDetail.name}
                 </p>
                 <p className="singer">
-                    {(props.ar)?.map(el => el.name).join('/')}
+                    {(coverDetail.ar)?.map(el => el.name).join('/')}
                 </p>
             </NavBar>
         </div>
         <div className="player-content flex4 flexbox-v align-c">
             {!showLyric ? <div onClick={() => setShowLyric(!showLyric)} className="flex4 img-cover flexbox-v align-c just-c">
-                <Image width={250} height={250} className='img' src={(props.al)?.picUrl} />
+                <Image width={250} height={250} className={`img ${!isPlay ? 'pause' : ''}`} src={(coverDetail.al)?.picUrl} />
             </div> : <Lyric lyric={state.lyric} onClick={() => setShowLyric(!showLyric)} >
             </Lyric>}
             <Actions />
-            <CustomProgressBar />
-            <audio src={state.playUrl} ref={audioRef} autoPlay></audio>
+            <CustomProgressBar
+            audio={audioRef}
+            {...state.audioData}
+            />
+            <audio src={song.url} onCanPlay={initAudio} ref={audioRef} autoPlay></audio>
         </div>
         <div className="player-footer flex1 flexbox-h align-c just-c">
             {state.playerIcons.map(item => (
                 <div className={`${item.className} icon ${isPlay ? 'play' : ''}`} onClick={() => handlePlay(item)} key={item.title} title={item.title}>
-                    {item.icon(isPlay)}
+                    {item.icon || (!isPlay ? <PlayOutline /> : <PauseOutlined />)}
                 </div>
             ))}
         </div>
@@ -206,4 +264,4 @@ function Player(props) {
         </Popup>
     </div> : <DotLoading style={{'color': 'var(--color-white)'}} />
 }
-export default Player
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
