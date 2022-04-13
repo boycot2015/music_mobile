@@ -55,3 +55,15 @@ export const formatNum = (num, fix = 0) => {
         }
     }, { passive: false })
 }
+
+/**
+ * 格式化时间
+ * @param {*} time 格式化时间字符串，单位 s
+ * @returns 00:00:00
+ */
+export const formatSongTime = (time) => {
+    let min = Math.round(time) > 59 ? (Math.round(time / 60) < 10 ? ('0' + parseInt(time / 60)) : Math.round(time / 60)) : '00'
+    let second = parseInt(time % 60) < 10 ? ('0' + parseInt(time % 60)) : parseInt(time % 60)
+    second = second === 60 ? '00' : second
+    return min + ':' + second
+}

@@ -6,6 +6,7 @@ import {
 } from 'antd-mobile-icons'
 import { Slider } from 'antd-mobile'
 import { useEffect, useRef, useState } from 'react'
+import { formatSongTime } from '@/utils'
 function CustomProgressBar(props) {
     // console.log(props, 'CustomProgressBar');
     const [state, setState] = useState({
@@ -19,20 +20,6 @@ function CustomProgressBar(props) {
             !auto && (audio.currentTime = val);
             setState({ ...state, ...props });
         }
-    }
-    const formatTime = (time) => {
-        time = parseInt(time)
-        let str = '00:00:00'
-        if (time < 60) {
-            str = '00:00:' +  (time < 10 ? '0' + time : time)
-        } else if (time >= 60 && time < 360) {
-           str = '00:' + (parseInt(time / 60) < 10 ? '0' + parseInt(time / 60) : parseInt(time / 60)) + ':' + (time % 60 < 10 ? '0' + time % 60 : time % 60)
-        } else if (time >= 360) {
-            let hours =  parseInt(time / 360) < 10 ? '0' + parseInt(time / 360) : parseInt(time / 360)
-            let mins =  parseInt(time / 60) < 10 ? '0' + parseInt(time / 60) : parseInt(time / 60)
-            str = hours + ':' + mins + ':' + (time % 60 < 10 ? '0' + time % 60 : time % 60)
-        }
-        return str
     }
     useEffect(() => {
         onChangeTime(props.currentTime, true)
@@ -53,10 +40,10 @@ function CustomProgressBar(props) {
         />
         <div className="time flexbox-h align-c">
             <span className='flex1 tl'>
-            {formatTime(state.currentTime)}
+            {formatSongTime(state.currentTime)}
             </span>
             <span className='flex1 tr'>
-            {formatTime(state.duration)}
+            {formatSongTime(state.duration)}
             </span>
             </div>
     </div>

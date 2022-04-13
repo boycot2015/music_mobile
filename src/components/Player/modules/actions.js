@@ -5,7 +5,7 @@ import {
     HeartOutline
 } from 'antd-mobile-icons'
 function Actions(params) {
-        return <div className="actions flex1 flexbox-h align-c">
+        return <div className="actions flexbox-h align-c">
         <div className="icon">
             <HeartOutline />
         </div>

@@ -18,7 +18,7 @@ import Actions from './modules/actions';
 import CustomProgressBar from './modules/progress-bar';
 import Lyric from './modules/lyric';
 import PlayList from '@/pages/song';
-
+import { formatSongTime } from '@/utils'
 import {
     MoreOutline,
     MessageOutline,
@@ -98,10 +98,26 @@ function Player(props) {
                 if (lyricRes.code === 200) {
                     setLoading(false)
                     let lyricList = lyricRes.lrc?.lyric?.split('\n') || []
-                    let lyric = lyricList.map(el => ({
-                        time: el.split(' ')[0]?.split(']')[0]?.split('[')[1]?.split(':')[1],
-                        text: el.replace(/\s*/g, "").split(']')[1]
-                    })).filter(el => el.text)
+                    let lyric = lyricList.map((el, i) => {
+                        // let time = el.split(' ')[0]?.split(']')[0]?.split('[')[1]?.split(':') || ''
+                        // let tempTime = time.length > 2 ? (parseInt(time[0]) * 360 + parseInt(time[1]) * 60 + parseInt(time[2])) : (parseInt(time[0]) * 60) + parseInt(time[1])
+                        // return {
+                        //     time: formatSongTime(tempTime),
+                        //     text: el.replace(/\s*/g, "").split(']')[1]
+                        // }
+                            const obj = {}
+                            el = (el && el.split(']')) || ''
+                            if (i > 0 && el && el[1] && !el[1].includes('[')) {
+                                let timeStr = el[0].split('[')[1]
+                                timeStr = timeStr.split(':')
+                                timeStr[1] = Math.round(timeStr[1]) + ''
+                                timeStr[1] = timeStr[1] < 10 ? '0' + timeStr[1] : timeStr[1]
+                                timeStr = timeStr.join(':')
+                                obj.time = timeStr
+                                obj.text = el[1]
+                            }
+                            return obj
+                    }).filter(el => el.text)
                     setState({
                         ...state,
                         coverDetail: { ...songs.filter(el => song.id === el.id)[0] },
@@ -232,7 +248,7 @@ function Player(props) {
         <div className="player-content flex4 flexbox-v align-c">
             {!showLyric ? <div onClick={() => setShowLyric(!showLyric)} className="flex4 img-cover flexbox-v align-c just-c">
                 <Image width={250} height={250} className={`img ${!isPlay ? 'pause' : ''}`} src={(coverDetail.al)?.picUrl} />
-            </div> : <Lyric lyric={state.lyric} onClick={() => setShowLyric(!showLyric)} >
+            </div> : <Lyric lyric={state.lyric} {...state.audioData} onClick={() => setShowLyric(!showLyric)} >
             </Lyric>}
             <Actions />
             <CustomProgressBar
@@ -241,7 +257,7 @@ function Player(props) {
             />
             <audio src={song.url} onCanPlay={initAudio} ref={audioRef} autoPlay></audio>
         </div>
-        <div className="player-footer flex1 flexbox-h align-c just-c">
+        <div className="player-footer flexbox-h align-c just-c">
             {state.playerIcons.map(item => (
                 <div className={`${item.className} icon ${isPlay ? 'play' : ''}`} onClick={() => handlePlay(item)} key={item.title} title={item.title}>
                     {item.icon || (!isPlay ? <PlayOutline /> : <PauseOutlined />)}
