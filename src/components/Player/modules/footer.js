@@ -16,7 +16,9 @@ import {
 import {
     PauseOutlined,
     StepBackwardFilled,
-    StepForwardFilled
+    StepForwardFilled,
+    MenuUnfoldOutlined,
+
 } from '@ant-design/icons'
 import { Toast, Image } from 'antd-mobile'
 function Footer (props) {
@@ -48,7 +50,7 @@ function Footer (props) {
             title: '下一首'
         },
         {
-            icon: <UnorderedListOutline />,
+            icon: <MenuUnfoldOutlined />,
             key: 'list',
             className: 'list-icon',
             title: '播放列表'
@@ -107,7 +109,7 @@ function Footer (props) {
     }
     return <div className={`player-footer flexbox-h align-c just-c ${props.className ? props.className : ''}`}>
         {props.className && props.className.includes('fixed') && <div className="img" onClick={() => song.url && props.onChangeShowStatus(false)}>
-            <Image width={45} height={45} src={currentSongDetail?.al?.picUrl}/>
+            <Image width={42} height={42} src={currentSongDetail?.al?.picUrl}/>
             </div>}
     {state.playerIcons.map(item => (
         <div className={`${item.className} icon ${isPlay ? 'play' : ''}`} onClick={() => handlePlay(item)} key={item.title} title={item.title}>

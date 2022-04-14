@@ -48,10 +48,10 @@
             position: relative;
         }
         .lyric {
-            height: 420px;
+            height: 460px;
             overflow: hidden;
             overflow-y: auto;
-            top: 30px;
+            top: 10px;
             position: absolute;
             // box-shadow: 0 0 30px var(--color-ccc);
             &-item {
@@ -64,7 +64,7 @@
                 font-size: var(--size-16);
                 color: var(--color-ccc);
                 &.active {
-                    font-size: var(--size-20);
+                    font-size: var(--size-18);
                     color: var(--color-white);
                 }
             }
@@ -72,11 +72,17 @@
         .actions {
             width: 100%;
             height: 80px;
-            justify-content: space-around;
+            justify-content: space-between;
             .icon {
                 font-size: 32px;
-                margin: 0 25px;
-                color: var(--color-white); 
+                margin: 0 20px;
+                color: var(--color-white);
+                &.heart {
+                    font-size: 28px;
+                    &.active {
+                        color: var(--adm-color-primary);
+                    }
+                }
             }
         }
         .progress-bar {
@@ -87,6 +93,9 @@
                 padding: 0 15px;
                 font-size: var(--size-14);
                 color: var(--color-white);
+            }
+            .adm-slider-track {
+                border-radius: 5px;
             }
         }
         @keyframes rotate-animate {

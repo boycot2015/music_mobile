@@ -91,7 +91,7 @@ function Layout(props) {
         <div className="music-main">
             <Header />
             <div className={'music-body'} style={{
-                height: `calc(100vh - ${currentRoute.showPlayer ? '165px' : '112px'})`
+                height: `calc(100vh - ${currentRoute && currentRoute.showPlayer ? '165px' : '112px'})`
             }}>
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/home'} />} />
@@ -99,9 +99,9 @@ function Layout(props) {
                     </Route>)}
                 </Routes>
             </div>
-            {currentRoute.showPlayer && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={!currentRoute.showPlayer} setPlayer={(val) => {
+            {currentRoute && currentRoute.showPlayer && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={!currentRoute.showPlayer} setPlayer={(val) => {
                 setShowPlayer(val);
-            }} className={`fixed ${currentRoute.hideTabBar ? 'fixed-bottom' : ''}`} />}
+            }} className={`fixed ${currentRoute && currentRoute.hideTabBar ? 'fixed-bottom' : ''}`} />}
             <Footer />
             <Popup
                 visible={showPlayer}

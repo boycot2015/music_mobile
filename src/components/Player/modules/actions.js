@@ -2,12 +2,15 @@ import {
     MoreOutline,
     MessageOutline,
     ArrowDownCircleOutline,
-    HeartOutline
+    HeartOutline,
+    HeartFill,
 } from 'antd-mobile-icons'
+import { useEffect, useRef, useState } from 'react'
 function Actions(params) {
+        const [star, setStar] = useState(false)
         return <div className="actions flexbox-h align-c">
-        <div className="icon">
-            <HeartOutline />
+        <div className={`icon heart ${star ? 'active' : ''}`} onClick={() => setStar(!star)}>
+        {star ? <HeartFill /> : <HeartOutline />}
         </div>
         <div className="icon">
             <ArrowDownCircleOutline />
