@@ -1,0 +1,43 @@
+.player-footer {
+    width: 100%;
+    padding: 0 15px;
+    z-index: 10;
+    height: 200px;
+    &.fixed {
+        background-color: var(--color-white);
+        height: 60px;
+        width: 100%;
+        border-top: 1px solid var(--color-border);
+        .icon {
+            font-size: 22px;
+            margin: 0 22px;
+            color: var(--color-333);
+        }
+        .play-icon {
+            padding: 6px 7px;
+            font-size: 18px;
+            border: 2px solid var(--color-333);
+        }
+    }
+    &.fixed-bottom {
+        bottom: 0;
+    }
+    .icon {
+        font-size: 32px;
+        margin: 0 25px;
+        color: var(--color-white);
+    }
+    .play-icon {
+        padding: 14px;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 20px;
+        border: 2px solid var(--color-white);
+        border-radius: 100%;
+    }
+    .prev-icon,
+    .next-icon {
+        font-size: 28px;
+        position: relative;
+    }
+}

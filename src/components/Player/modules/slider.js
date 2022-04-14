@@ -8,14 +8,12 @@ import { Slider } from 'antd-mobile'
 import { useEffect, useRef, useState } from 'react'
 import { formatSongTime } from '@/utils'
 function CustomProgressBar(props) {
-    // console.log(props, 'CustomProgressBar');
     const [state, setState] = useState({
         currentTime: props.currentTime,
-        duration: props.duration,
-        audioLoading: false,
+        duration: props.duration
     });
     const onChangeTime = (val, auto) => {
-        const audio = props.audio.current;
+        const audio = props.audio;
         if (audio) {
             !auto && (audio.currentTime = val);
             setState({ ...state, ...props });

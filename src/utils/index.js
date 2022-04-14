@@ -67,3 +67,48 @@ export const formatSongTime = (time) => {
     second = second === 60 ? '00' : second
     return min + ':' + second
 }
+
+/**
+ * 动画函数
+ * @param {*} obj dom对象
+ * @param {*} json 属性
+ * @param {*} interval 调用间隔
+ * @param {*} sp 步长
+ * @param {*} fn 回调
+ */
+export const animate = (ele, target, attr, type) => {
+    // 先清定时器
+    clearInterval(ele.timer)
+    function getStyle(obj, arr) {
+      if (obj.currentStyle) {
+        return obj.currentStyle[arr];  //针对ie
+      } else {
+        return document.defaultView.getComputedStyle(obj, null)[arr];
+      }
+    }
+    ele.timer = setInterval(function () {
+        // 四部
+        // 1.获取步长
+        let leader = 0
+        if (type === 1) {
+            leader = ele[attr]
+        } else {
+            leader = parseInt(getStyle(ele, attr)) || 0// 获取值可能含有px，我们只取数字部分parseInt()
+        }
+        let step = (target - leader) / 100
+        // 2.二次加工步长
+        step = step > 0 ? Math.ceil(step) : Math.floor(step)
+        leader = leader + step
+        // 3.赋值
+        !type && (ele.style[attr] = leader + 'px')
+        type && (ele[attr] = leader)
+        // 4.清除定时器
+        // console.log(target - leader, step, ele[attr])
+        // Math.abs(target - leader) ||  target === leader
+        if (target === leader) {
+            !type && (ele.style[attr] = target + 'px')
+            type === 1 && (ele[attr] = target)
+            clearInterval(ele.timer)
+        }
+    }, 10)
+}

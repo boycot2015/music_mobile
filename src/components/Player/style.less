@@ -7,12 +7,12 @@
         height: 100%;
         z-index: 1;
         background-position: center;
-        background-size: cover;
+        background-size: 300%;
         background-repeat: no-repeat;
         -webkit-filter: blur(30px);
-        filter: blur(15px);
+        filter: blur(30px) drop-shadow(16px 16px 20px #000) invert(40%);
         overflow: hidden;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: var(--color-ccc);
     }
     &-header {
         color: var(--color-white);
@@ -43,12 +43,12 @@
                 }
             }
         }
-        .lyric-cover {
+        .lyric-section {
             width: 100%;
             position: relative;
         }
         .lyric {
-            height: 380px;
+            height: 420px;
             overflow: hidden;
             overflow-y: auto;
             top: 30px;
@@ -62,10 +62,10 @@
                 flex-wrap: wrap;
                 word-break: break-all;
                 font-size: var(--size-16);
-                color: var(--color-white);
+                color: var(--color-ccc);
                 &.active {
                     font-size: var(--size-20);
-                    color: var(--adm-color-primary);
+                    color: var(--color-white);
                 }
             }
         }
@@ -81,7 +81,7 @@
         }
         .progress-bar {
             width: 100%;
-            padding: 0 15px;
+            padding: 0 10px;
             .time {
                 margin-top: 5px;
                 padding: 0 15px;
@@ -99,29 +99,6 @@
             100% {
                 transform: rotate(1turn);
             }
-        }
-    }
-    &-footer {
-        width: 100%;
-        padding: 0 15px;
-        z-index: 10;
-        height: 120px;
-        .icon {
-            font-size: 32px;
-            margin: 0 25px;
-            color: var(--color-white);
-        }
-        .play-icon {
-            padding: 10px;
-            font-size: 20px;
-            line-height: 20px;
-            border: 2px solid var(--color-white);
-            border-radius: 100%;
-        }
-        .prev-icon,
-        .next-icon {
-            font-size: 28px;
-            position: relative;
         }
     }
 }

@@ -16,7 +16,7 @@ export function mapDispatchToProps(dispatch) {
 
     const onSetSongs = (songs) => {
         dispatch(setSongs(songs));
-        onChangeSong(songs[0].id);
+        // onChangeSong(songs[0].id);
     }
 
     const onChangeShowStatus = (status) => {

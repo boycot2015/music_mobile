@@ -7,17 +7,15 @@ import {
   } from 'react-router-dom'
 import MusicItem from '@/components/MusicItem'
 import { getPlaylistDetail, getSongDetail } from '@/api/song'
-import Player from '@/components/Player'
 import './style.less'
 function CustomList(props) {
     const location = useLocation()
     const { state: query } = location
-    const [loading, setLoading] = useState(true)
-    const [showPlayer, setPlayer] = useState(false)
+    const [loading, setLoading] = useState(!props.songsList)
     const [state, setState] = useState({
         coverDetail: {},
         playDetail: '',
-        playlists: []
+        playlists: props.songsList || []
     })
     let hasFetch = false // 防止多次渲染
     useEffect(() => {
@@ -40,12 +38,13 @@ function CustomList(props) {
                 }
             })
         }
-        !hasFetch && fetchData();
+        !hasFetch && !props.songsList && fetchData();
         hasFetch = true
     }, [])
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
-            setPlayer(true)
+            props.onChangeShowStatus && props.onChangeShowStatus(false)
+            props.setShowPlayList && props.setShowPlayList(false)
         })
     }
     return <div className='song-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
@@ -72,13 +71,6 @@ function CustomList(props) {
                   )
              }
         </Grid> : <DotLoading color='primary' />}
-        <Popup
-            visible={showPlayer}
-            onMaskClick={() => {
-            setPlayer(false)
-          }}>
-            <Player setPlayer={(val) => setPlayer(val)} />
-        </Popup>
     </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CustomList)

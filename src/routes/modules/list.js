@@ -16,6 +16,7 @@ const routes = [
         key: '/song/list',
         element: <SongList />,
         hideTabBar: true,
+        showPlayer: true,
         title: '歌单详情',
         icon: <UserOutline />,
     },
