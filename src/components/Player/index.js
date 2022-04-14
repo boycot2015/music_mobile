@@ -9,27 +9,20 @@ import {
     getSongUrl
 } from '@/api/song'
 import './style.less'
-import { Popup, Toast, DotLoading, Image, NavBar } from 'antd-mobile'
-import {
-    useNavigate,
-    useLocation
-  } from 'react-router-dom'
+import { DotLoading, Image, NavBar } from 'antd-mobile'
+
 import Actions from './modules/actions';
 import CustomSlider from './modules/slider';
 import Footer from './modules/footer';
 import Lyric from './modules/lyric';
-import PlayList from '@/pages/song';
 import {
     DownOutline
 } from 'antd-mobile-icons'
 function Player(props) {
     // console.log(props, 'props');
     const { song, songs, showStatus, isPlay, onChangeShowStatus } = props;
-    const location = useLocation()
-    const { state: query } = location
     const [loading, setLoading] = useState(true)
     const [showLyric, setShowLyric] = useState(false)
-    const [showPlayList, setShowPlayList] = useState(false)
     const [state, setState] = useState({
         coverDetail: { ...songs.filter(el => song.id === el.id)[0] },
         lyric: [],
@@ -105,7 +98,7 @@ function Player(props) {
             </NavBar>
         </div>
         <div className="player-content flexbox-v align-c">
-            {!showLyric ? <div onClick={() => setShowLyric(!showLyric)} className="flex4 img-cover flexbox-v align-c just-c">
+            {!showLyric ? <div onClick={() => setShowLyric(!showLyric)} className="img-cover flexbox-v align-c just-c">
                 <Image width={250} height={250} className={`img ${!isPlay ? 'pause' : ''}`} src={(coverDetail.al)?.picUrl} />
             </div> : <Lyric lyric={state.lyric} {...props} onClick={() => setShowLyric(!showLyric)} >
             </Lyric>}
@@ -115,21 +108,7 @@ function Player(props) {
             audio={props.audio}
             />
         </div>
-        <Footer audio={props.audio} {...props} setShowPlayList={(val) => setShowPlayList(val)} />
-        <Popup
-            visible={showPlayList}
-            onMaskClick={() => {
-                setShowPlayList(false)
-          }}>
-            <PlayList
-            {...query}
-            songsList={songs}
-            style={{maxHeight: 500, overflowY: 'auto', padding: '20px 0', textAlign: 'center'}}
-            setShowPlayList={(val) => setShowPlayList(val)}
-            setPlayList={(show, val, playlists) => {
-                setShowPlayList(false)
-            }} />
-        </Popup>
+        <Footer audio={props.audio} {...props} />
     </div> : <DotLoading style={{'color': 'var(--color-white)'}} />
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

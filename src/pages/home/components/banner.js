@@ -1,9 +1,13 @@
 
-import React, { useRef, useImperativeHandle, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Swiper, Toast, Image, Skeleton } from 'antd-mobile'
+import {
+    useNavigate
+} from 'react-router-dom'
 import './banner.less'
 import { getBanner } from '@/api/home'
-// import { useDataApi } from '@/utils/useApi'
+import { connect } from 'react-redux';
+import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 const randomColor = () => {
     let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f']
     let str = '#'
@@ -12,12 +16,13 @@ const randomColor = () => {
     }
     return str
 }
-function Banner(props, homeRef) {
+function Banner(props) {
     // const colors = [randomColor(), randomColor(), randomColor(), randomColor()]
     let hasFetch = false // 防止多次渲染
     const [state, setState] = useState({
         banners: []
     })
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,11 +40,6 @@ function Banner(props, homeRef) {
         !hasFetch && fetchData();
         hasFetch = true
     }, [])
-    // const SwiperRef = useRef(null)
-    // homeRef.current && useImperativeHandle(homeRef, () => ({
-    //     swipePrev: SwiperRef.current?.swipePrev,
-    //     swipeNext: SwiperRef.current?.swipeNext,
-    // }))
     return <div className={'swiper'}>
         {state.banners.length ? <Swiper
         // ref={SwiperRef}
@@ -69,7 +69,8 @@ function Banner(props, homeRef) {
                 className={'swiper-item'}
                 style={{ background: banner }}
                 onClick={() => {
-                  Toast.show(`你点击了卡片 ${index + 1}`)
+                    // navigate(`你点击了卡片 ${index + 1}`)
+                    banner.targetId && props.onChangeSong(banner.targetId)
                 }}
               >
                 <Image fit={'cover'} src={banner.imageUrl} />
@@ -84,4 +85,4 @@ function Banner(props, homeRef) {
             {props.children}
     </div>
 }
-export default React.memo(Banner)
+export default connect(mapStateToProps, mapDispatchToProps)(Banner)

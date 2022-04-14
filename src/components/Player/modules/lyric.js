@@ -26,8 +26,8 @@ function Actions(props) {
         })
     }, [props.currentTime])
     const { currentLyric } = state
-    return <div className="lyric-section flex4 flexbox-v tc" onClick={(e) => props.onClick(e)}>
-        <div ref={lyricRef} className={`lyric flexbox-v tc ${props.lyric.length < 5 && 'align-c just-c'}`}>
+    return <div className="lyric-section flexbox-v tc" onClick={(e) => props.onClick(e)}>
+        <div ref={lyricRef} className={`lyric flexbox-v tc ${props.lyric.length < 5 ? 'align-c just-c' : ''}`}>
             {
                 props.lyric.length ? props.lyric.map((el, index) =>
                 <div className={`lyric-item ${currentLyric.time === el.time ? 'active' : ''}`} key={index}>

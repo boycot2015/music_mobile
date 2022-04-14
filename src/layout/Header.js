@@ -10,6 +10,9 @@ import {
     UnorderedListOutline,
     MovieOutline
 } from 'antd-mobile-icons'
+import {
+    MenuOutlined
+} from '@ant-design/icons'
 import routes from '../routes'
 function Header() {
     const location = useLocation()
@@ -23,7 +26,8 @@ function Header() {
     <div className="music-header">
         <NavBar className="music-header"
         backArrow={pathname !== '/home'}
-        back={pathname !== '/home' ? '' : <UnorderedListOutline style={{'fontSize': 24}} />}
+        back={pathname !== '/home' ? '' : null}
+        left={pathname !== '/home' ? '' : <MenuOutlined style={{'fontSize': 20}} />}
         right={pathname !== '/home' ? '' : <AudioOutline style={{'fontSize': 24}} />}
         onBack={() => navigate(-1)}>
             {pathname !== '/home' ? title : '' }
@@ -33,7 +37,7 @@ function Header() {
                 style={{
                 //   '--background': '#ffffff',
                 '--border-radius': '50px',
-                padding: '0 15px',
+                padding: 0,
                 margin: '15px 0'
             }}
             />}

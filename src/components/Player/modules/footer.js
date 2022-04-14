@@ -3,13 +3,6 @@ import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import './footer.less'
 import {
-    MoreOutline,
-    MessageOutline,
-    ArrowDownCircleOutline,
-    HeartOutline,
-    DownOutline,
-    DownFill,
-    UnorderedListOutline,
     LoopOutline,
     PlayOutline
 } from 'antd-mobile-icons'
@@ -18,11 +11,17 @@ import {
     StepBackwardFilled,
     StepForwardFilled,
     MenuUnfoldOutlined,
-
 } from '@ant-design/icons'
-import { Toast, Image } from 'antd-mobile'
+import {
+    useLocation
+  } from 'react-router-dom'
+import { Toast, Image, Popup } from 'antd-mobile'
+import PlayList from '@/pages/song';
 function Footer (props) {
     const { isPlay, songs, song, onPauseOrPlay, audio } = props
+    const [showPlayList, setShowPlayList] = useState(false)
+    const location = useLocation()
+    const { state: query } = location
     const currentSongDetail = songs.filter(el => el.id === song.id)[0]
     const [state, setState] = useState({
         playerIcons: [{
@@ -69,7 +68,7 @@ function Footer (props) {
                     Play(type.key)
                 break;
                 case 'list':
-                    props.setShowPlayList(true)
+                    setShowPlayList(true)
                 break;
             default:
                 break;
@@ -99,15 +98,13 @@ function Footer (props) {
         if (!nextSong) return Toast.show('没歌放了喔(⊙_⊙)');
         props.onChangeSong(nextSong.id)
         .then(res => {
-            if (res) {
-                // audioRef.current.play()
-            } else {
+            if (!res) {
                 // * 无权播放歌曲 继续播放下一首/上一首
                 onStepSong(++currentSongIndex, next);
             }
         })
     }
-    return <div className={`player-footer flexbox-h align-c just-c ${props.className ? props.className : ''}`}>
+    return <div className={`player-footer flexbox-h align-c just-between ${props.className ? props.className : ''}`}>
         {props.className && props.className.includes('fixed') && <div className="img" onClick={() => song.url && props.onChangeShowStatus(false)}>
             <Image width={42} height={42} src={currentSongDetail?.al?.picUrl}/>
             </div>}
@@ -116,6 +113,20 @@ function Footer (props) {
             {item.icon || (!isPlay ? <PlayOutline /> : <PauseOutlined />)}
         </div>
     ))}
+    {!!songs.length && <Popup
+        visible={showPlayList}
+        onMaskClick={() => {
+            setShowPlayList(false)
+        }}>
+        <PlayList
+        {...query}
+        songsList={songs}
+        style={{maxHeight: 500, overflowY: 'auto', padding: '20px 0', textAlign: 'center'}}
+        setShowPlayList={(val) => setShowPlayList(val)}
+        setPlayList={(show, val, playlists) => {
+            setShowPlayList(false)
+        }} />
+    </Popup>}
 </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);
