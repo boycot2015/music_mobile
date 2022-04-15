@@ -37,7 +37,7 @@ function CommitItem(props) {
         <div className="userinfo flex4 flexbox-h">
             <div className="text flexbox-v">
                 <div className="nickname">{props.user?.nickname}</div>
-                <div className="time">{new Date(props.time).toLocaleString()}</div>
+                <div className="time">{new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>
             </div>
             <div onClick={() => {
                 setIsLiked(!isLiked)

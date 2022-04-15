@@ -18,7 +18,7 @@ function CustomList(props) {
     const { song, songs, showStatus, isPlay, onChangeShowStatus } = props;
     const [state, setState] = useState({
         coverDetail: { ...query },
-        commitList: [],
+        commentList: [],
         hotComments: [],
         currentCommit: {},
         offset: 0
@@ -29,14 +29,37 @@ function CustomList(props) {
     const loadMore = () =>  {
         return fetchData({offset: state.offset })
     }
+    useEffect(() => {
+        fetchData({offset: 0 })
+    }, [query.id])
     const fetchData = (params) => {
+        const filterComment = (comments) => {
+            let arr = []
+            comments.map(el => {
+                if (el.parentCommentId && el.beReplied?.length) {
+                    const { beReplied, ...others } = el
+                    arr.push({
+                        ...beReplied[0],
+                        ...beReplied[0]?.user,
+                        beReplied: [{
+                            ...others
+                        }]
+                    })
+                } else {
+                    arr.push(el)
+                }
+            })
+            return arr
+        }
         return getComment({id: song.id || query.id, ...params }).then(res => {
             if (res.code === 200) {
+                let {ar, al, name, ...others } = {...songs.filter(el => el.id === song.id)[0]}
                 setState({
                     ...state,
-                    offset: ++(params.offset) || 1,
-                    commitList: params?.offset ? [...state.commitList, ...res.comments] : res.comments,
-                    hotComments: res.hotComments ? res.hotComments : state.hotComments
+                    coverDetail: {...others, name: name || query.name, picUrl: al?.picUrl || query.picUrl, singers: ar?.map(el => el.name)?.join('/') || query.singers},
+                    offset: ++(params.offset) || 0,
+                    commentList: params?.offset ? [...state.commentList, ...filterComment(res.comments)] : filterComment(res.comments),
+                    hotComments: res.hotComments ? filterComment(res.hotComments) : state.hotComments
                 })
                 setTimeout(() => {
                     setHasMore(res.comments.length > 0)
@@ -69,9 +92,9 @@ function CustomList(props) {
                     </List.Item>)
                 }
             </List> : null}
-            {state.commitList && state.commitList.length ? <List>
+            {state.commentList && state.commentList.length ? <List>
                 {
-                    state.commitList.map((el, index) =>
+                    state.commentList.map((el, index) =>
                     <List.Item key={index}>
                         <CommitItem setShowRepeat={(val) => {
                             setShowRepeat(val)

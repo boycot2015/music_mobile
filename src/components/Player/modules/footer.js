@@ -77,7 +77,7 @@ function Footer (props) {
     }
     const Play = (val) => {
         if (!props.audio) {
-            props.audio = document.querySelector('audio')
+            return
         }
         if (val) {
             onStepSong('', val === 'next')
@@ -89,6 +89,7 @@ function Footer (props) {
 
     }
     const onStepSong =  (currentSongIndex, next = true) => {
+        if (!songs.length) return Toast.show('没歌放了喔(⊙_⊙)');
         // * 赋值则递归调用，否则进行初始化操作
         if (!currentSongIndex) {
             currentSongIndex = songs.findIndex((item) => item.id === song.id);
