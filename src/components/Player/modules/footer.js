@@ -4,7 +4,8 @@ import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import './footer.less'
 import {
     LoopOutline,
-    PlayOutline
+    PlayOutline,
+    CloseOutline
 } from 'antd-mobile-icons'
 import {
     PauseOutlined,
@@ -115,9 +116,27 @@ function Footer (props) {
     ))}
     {!!songs.length && <Popup
         visible={showPlayList}
+        forceRender
+        bodyStyle={{
+            borderRadius: '10px 10px 0 0'
+        }}
         onMaskClick={() => {
             setShowPlayList(false)
         }}>
+            <h3 className='title clearfix' style={{
+                padding: '15px',
+                fontSize: 18,
+                margin: 0,
+                borderBottom: '1px solid #e8e8e8'
+            }}>播放列表
+            <CloseOutline
+            onClick={() => {
+                setShowPlayList(false)
+            }}
+            style={{
+                fontSize: 20,
+            }} className='fr' />
+            </h3>
         <PlayList
         {...query}
         songsList={songs}

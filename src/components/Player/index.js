@@ -40,6 +40,7 @@ function Player(props) {
         const fetchData = () => {
             setLoading(true)
             setShowLyric(false)
+            if (!song.id) return
             getPlayLyric({ id: song.id }).then(lyricRes => {
                 if (lyricRes.code === 200) {
                     setLoading(false)
@@ -83,10 +84,6 @@ function Player(props) {
             left={<DownOutline style={{fontSize: 26}} onClick={() => {
                 props.onChangeShowStatus && props.onChangeShowStatus(true)
                 props.setPlayer && props.setPlayer(false)
-                setState({
-                    ...state,
-                    coverDetail: {}
-                })
             }} />}
             backArrow={false}>
                 <p className="name">
@@ -102,7 +99,7 @@ function Player(props) {
                 <Image width={250} height={250} className={`img ${!isPlay ? 'pause' : ''}`} src={(coverDetail.al)?.picUrl} />
             </div> : <Lyric lyric={state.lyric} {...props} onClick={() => setShowLyric(!showLyric)} >
             </Lyric>}
-            <Actions />
+            <Actions onChangeShowStatus={onChangeShowStatus} { ...songs.filter(el => song.id === el.id)[0] } { ...song } />
             <CustomSlider
             {...props}
             audio={props.audio}

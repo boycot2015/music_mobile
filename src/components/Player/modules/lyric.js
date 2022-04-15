@@ -14,13 +14,12 @@ function Actions(props) {
                 })
                 // let scrollHeight = lyricRef.current.parentNode.offsetHeight
                 let topIndex = 5
-                let offsetHeight = (lyricRef.current.children[0].offsetHeight + 10)
+                let offsetHeight = (lyricRef.current.children[0].offsetHeight + 11)
                 let scrollTop = 0
                 scrollTop = (index - topIndex) * offsetHeight
                 if (index < topIndex) {
                     scrollTop = 0
                 }
-                // lyricRef.current.scrollTop = scrollTop
                 animate(lyricRef.current, scrollTop, 'scrollTop', 1)
             }
         })

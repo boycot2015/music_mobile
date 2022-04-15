@@ -95,7 +95,7 @@ export const animate = (ele, target, attr, type) => {
         } else {
             leader = parseInt(getStyle(ele, attr)) || 0// 获取值可能含有px，我们只取数字部分parseInt()
         }
-        let step = (target - leader) / 100
+        let step = (target - leader) / 50
         // 2.二次加工步长
         step = step > 0 ? Math.ceil(step) : Math.floor(step)
         leader = leader + step

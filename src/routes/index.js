@@ -10,6 +10,7 @@ import Message from '@/pages/message'
 import PersonalCenter from '@/pages/userCenter'
 import CustomList from '@/pages/custom-list'
 import list from './modules/list'
+import commit from './modules/commit'
 const routes = [
     {
         key: '/home',
@@ -55,6 +56,7 @@ const routes = [
         showPlayer: true,
         icon: <UserOutline />,
     },
-    ...list
+    ...list,
+    ...commit
 ]
 export default routes

@@ -14,14 +14,18 @@ import {
     MenuOutlined
 } from '@ant-design/icons'
 import routes from '../routes'
-function Header() {
+function Header(props) {
     const location = useLocation()
     const navigate = useNavigate()
     const { pathname, state } = location
     const currentRoute = routes.filter(el => el.key === pathname)[0]
     currentRoute && (document.title = config.websiteName + '-' + currentRoute.title)
     if (!currentRoute || currentRoute.hideNavBar) return null
-    const title = (state !== null && state.title) || currentRoute.title
+    let title = (state !== null && state.title) || currentRoute.title
+    if (props.al) {
+        title = props.name + ' - ' + props.ar?.map(el => el.name).join('/')
+        document.title = '正在播放：' + title
+    }
   return (
     <div className="music-header">
         <NavBar className="music-header"

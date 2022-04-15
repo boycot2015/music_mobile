@@ -89,9 +89,9 @@ function Layout(props) {
   return (
     <Router initialEntries={['/home']}>
         <div className="music-main">
-            <Header />
+            <Header { ...songs.filter(el => song.id === el.id)[0] } { ...song } />
             <div className={'music-body'} style={{
-                height: `calc(100vh - ${currentRoute && currentRoute.showPlayer ? '165px' : '112px'})`
+                height: `calc(100vh - ${(currentRoute && currentRoute.showPlayer) || pathname === '/' ? '165px' : '112px'})`
             }}>
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/home'} />} />
@@ -99,11 +99,12 @@ function Layout(props) {
                     </Route>)}
                 </Routes>
             </div>
-            {currentRoute && currentRoute.showPlayer && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={!currentRoute.showPlayer} setPlayer={(val) => {
+            {((currentRoute && currentRoute.showPlayer) || pathname === '/') && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={currentRoute && !currentRoute.showPlayer} setPlayer={(val) => {
                 setShowPlayer(val);
-            }} className={`fixed ${currentRoute && currentRoute.hideTabBar ? 'fixed-bottom' : ''}`} />}
+            }} className={`fixed ${(currentRoute && currentRoute.hideTabBar) || pathname === '/' ? 'fixed-bottom' : ''}`} />}
             <Footer />
             <Popup
+                forceRender
                 visible={showPlayer}
                 onMaskClick={() => {
                     setShowPlayer(false)

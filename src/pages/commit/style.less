@@ -1,0 +1,59 @@
+.commit-list {
+    overflow: auto;
+    padding-bottom: 0!important;
+    &-top {
+        width: 100%;
+        padding: 5px 15px;
+        font-size: var(--size-14);
+        border-top: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border);
+        background-color: var(--color-white);
+        .img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 100%;
+        }
+        .name {
+            line-height: 1.5;
+            margin-right: 5px;
+        }
+        .singer {
+            margin-left: 5px;
+            color: var(--color-999);
+        }
+    }
+    .music-commit {
+        height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .adm-list-default .adm-list-body {
+        border-top: 0;
+        border-bottom: 0;
+    }
+    .adm-list {
+        --padding-left: 15px !important;
+        .adm-list-item {
+            .adm-list-item-content {
+                padding-right: 0;
+                border-top: 0;
+                .adm-list-item-content-main {
+                    padding-bottom: 0;
+                }
+            }
+        }
+    }
+    &.repeat  {
+        .repeated-user {
+            .adm-list-item {
+                border-bottom: 10px solid var(--color-f8);
+            }
+        }
+        .music-commit-item {
+            .bottom {
+                border-bottom: 0
+            }
+        }
+    }
+}
