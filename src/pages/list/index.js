@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Grid, DotLoading } from 'antd-mobile'
+import { Grid, DotLoading, InfiniteScroll } from 'antd-mobile'
 import {
     useLocation,
   } from 'react-router-dom'
@@ -10,41 +10,54 @@ function CustomList() {
     const location = useLocation()
     const { state: query } = location
     const [loading, setLoading] = useState(true)
+    const [hasMore, setHasMore] = useState(true)
     const [state, setState] = useState({
         activeCate: 0,
         playlists: [],
         cateList: [],
+        offset: 0,
         params: { ...query },
         hotCateList: []
     })
-    let hasFetch = false // 防止多次渲染
+    const fetchData = (params) => {
+        setLoading(true)
+        return getPlaylist({...query, ...state.params, limit: 45, order: 'hot', ...params }).then(res => {
+            setLoading(false)
+            if (res.code === 200) {
+                setState({
+                    ...state,
+                    offset: ++state.offset || 0,
+                    playlists: params?.offset ? [...state.playlists, ...res.playlists] : res.playlists
+                })
+                setTimeout(() => {
+                    setHasMore(res.more)
+                }, 500);
+            }
+        })
+    }
+    const loadMore = () =>  {
+        return fetchData({offset: state.offset })
+    }
     useEffect(() => {
-        const fetchData = () => {
-            setLoading(true)
+        const fetchCateData = () => {
             getCatlist({}).then(cate => {
                 if (cate.code === 200) {
-                    getPlaylist({...query, ...state.params, limit: 45, order: 'hot' }).then(res => {
-                        setLoading(false)
-                        if (res.code === 200) {
-                            setState({
-                                ...state,
-                                hotCateList: cate.sub?.filter(el => el.hot),
-                                cateList: cate.sub,
-                                playlists: res.playlists
-                            })
-                        }
+                    setState({
+                        ...state,
+                        hotCateList: cate.sub?.filter(el => el.hot),
+                        cateList: cate.sub
                     })
                 }
             })
         }
-        !hasFetch && fetchData();
-        hasFetch = true
-    }, [state.params])
+        fetchCateData()
+    }, [])
     const handleCateChange = (params, index) => {
         setState({
             ...state,
             activeCate: index,
-            params: { cat: params.name, offset: 1 },
+            playlists: [],
+            params: { cat: params.name, offset: 0 },
         })
     }
     return <div className='category-list flexbox-v' style={{"minHeight": 300}}>
@@ -58,32 +71,33 @@ function CustomList() {
             gap={8}
             >
                 {
-                    state.hotCateList.map((el, index) =>
+                    (state.hotCateList && state.hotCateList.length) ? state.hotCateList.map((el, index) =>
                     <Grid.Item
                     key={el.name}
                     onClick={() => handleCateChange(el, index)}
                     className={`cate-list-item ${index === state.activeCate && 'active'}`}
                     >
                         {el.name}
-                    </Grid.Item>)
+                    </Grid.Item>) : null
                 }
             </Grid>
         }
 
-        {(state.playlists && state.playlists.length && !loading) ? <Grid
+        {(state.playlists && state.playlists.length) ? <Grid
             columns={3}
             style={{
                 padding: '0 15px'
             }} className={'music-grid'}
             gap={8}>
              {
-                 state.playlists.map(el =>
-                 <Grid.Item key={el.id}>
+                 state.playlists.map((el, index) =>
+                 <Grid.Item key={index}>
                     <MusicItem data={el} />
                   </Grid.Item>
                   )
              }
-        </Grid> : <DotLoading color='primary' />}
+        </Grid> : null}
+        <InfiniteScroll loadMore={loadMore} threshold={100} hasMore={hasMore} />
     </div>
 }
 export default CustomList

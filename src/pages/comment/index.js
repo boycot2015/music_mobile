@@ -15,11 +15,12 @@ const filterComment = (comments) => {
     let arr = []
     comments.map(el => {
         if (el.parentCommentId && el.beReplied?.length) {
-            const { beReplied, time, ...others } = el
+            const { beReplied, time, likedCount, ...others } = el
             arr.push({
                 time,
                 ...beReplied[0],
                 ...beReplied[0]?.user,
+                likedCount,
                 beReplied: [{
                     time,
                     ...others
@@ -29,7 +30,7 @@ const filterComment = (comments) => {
             arr.push(el)
         }
     })
-    console.log(arr, '123123');
+    // console.log(arr, '123123');
     return arr
 }
 function CommentList(props) {

@@ -9,6 +9,7 @@ const routes = [
         key: '/category/list',
         element: <CategoryList />,
         hideTabBar: true,
+        showPlayer: true,
         title: '歌单列表',
         icon: <UserOutline />,
     },
