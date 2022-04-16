@@ -12,6 +12,7 @@ function CustomList(props) {
     const location = useLocation()
     const { state: query } = location
     const [loading, setLoading] = useState(!props.songsList)
+    const { onSetSongs, onChangeShowStatus } = props;
     const [state, setState] = useState({
         coverDetail: {},
         playDetail: '',
@@ -32,7 +33,7 @@ function CustomList(props) {
                                 coverDetail: list.playlist,
                                 playlists: res.songs
                             })
-                            props.onSetSongs(res.songs)
+                            onSetSongs(res.songs)
                         }
                     })
                 }
@@ -43,7 +44,7 @@ function CustomList(props) {
     }, [])
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
-            props.onChangeShowStatus && props.onChangeShowStatus(false)
+            onChangeShowStatus && onChangeShowStatus(false)
             props.setShowPlayList && props.setShowPlayList(false)
         })
     }

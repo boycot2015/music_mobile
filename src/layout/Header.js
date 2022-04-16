@@ -1,4 +1,5 @@
-import { NavBar, SearchBar } from 'antd-mobile'
+import { useEffect, useState, useRef } from 'react'
+import { NavBar, SearchBar, Popup } from 'antd-mobile'
 import logo from '../logo.svg';
 import config from '@/config'
 import {
@@ -14,9 +15,11 @@ import {
     MenuOutlined
 } from '@ant-design/icons'
 import routes from '../routes'
+import MenuList from '@/components/Menu';
 function Header(props) {
     const location = useLocation()
     const navigate = useNavigate()
+      const [showMenu, setShowMenu] = useState(false);
     const { pathname, state } = location
     const currentRoute = routes.filter(el => el.key === pathname)[0]
     currentRoute && (document.title = config.websiteName + '-' + currentRoute.title)
@@ -24,14 +27,14 @@ function Header(props) {
     let title = (state !== null && state.title) || currentRoute.title
     if (props.al) {
         title = props.name + ' - ' + props.ar?.map(el => el.name).join('/')
-        document.title = '正在播放：' + title
+        props.isPlay && (document.title = '正在播放：' + title)
     }
   return (
     <div className="music-header">
         <NavBar className="music-header"
         backArrow={pathname !== '/home'}
         back={pathname !== '/home' ? '' : null}
-        left={pathname !== '/home' ? '' : <MenuOutlined style={{'fontSize': 20}} />}
+        left={pathname !== '/home' ? '' : <MenuOutlined onClick={() => setShowMenu(!showMenu)} style={{'fontSize': 20}} />}
         right={pathname !== '/home' ? '' : <AudioOutline style={{'fontSize': 24}} />}
         onBack={() => navigate(-1)}>
             {pathname !== '/home' ? title : '' }
@@ -47,6 +50,15 @@ function Header(props) {
             />}
 
         </NavBar>
+            <Popup
+            bodyStyle={{ width: '80vw' }}
+                position='left'
+                visible={showMenu}
+                onMaskClick={() => {
+                    setShowMenu(false)
+            }}>
+                <MenuList />
+            </Popup>
     </div>
   );
 }

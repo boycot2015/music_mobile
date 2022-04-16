@@ -5,14 +5,17 @@ import {
     HeartOutline,
     HeartFill,
 } from 'antd-mobile-icons'
-import { Badge } from 'antd-mobile'
+import { Badge, Popup } from 'antd-mobile'
 import { useState, useEffect } from 'react'
 import {
     useNavigate,
   } from 'react-router-dom'
 import { getComment, getSongDetail } from '@/api/song'
-  function Actions(props) {
+import CommentList from '@/pages/comment'
+function Actions(props) {
       const [commitCount, setCommitCount] = useState(0);
+    //   const [showComment, setShowComment] = useState(false);
+    //   const [commentParams, setCommentParams] = useState({});
       useEffect(() => {
         getComment({id: props.id }).then(res => {
             if (res.code === 200) {
@@ -37,7 +40,9 @@ import { getComment, getSongDetail } from '@/api/song'
                 name: props.name,
                 singers: props.ar?.map(el => el.name).join('/')
             }
-            navigate('/commit', { state: { ...data } })
+            navigate('/comment', { state: { ...data } })
+            // setCommentParams(data)
+            // setShowComment(true)
             props.onChangeShowStatus(true)
         }}>
             <Badge content={commitCount > 999 ? '999+' : commitCount}
@@ -49,6 +54,13 @@ import { getComment, getSongDetail } from '@/api/song'
         <div className="icon">
             <MoreOutline />
         </div>
+        {/* <Popup
+                visible={showComment}
+                onMaskClick={() => {
+                    setShowComment(false)
+            }}>
+                <CommentList {...commentParams} />
+            </Popup> */}
     </div>
 }
 export default Actions

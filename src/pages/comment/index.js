@@ -8,12 +8,34 @@ import {
 import {
     CloseOutline
 } from 'antd-mobile-icons'
-import CommitItem from '@/components/Commit'
+import CommentItem from '@/components/Comment'
 import { getComment, getSongDetail } from '@/api/song'
 import './style.less'
-function CustomList(props) {
+const filterComment = (comments) => {
+    let arr = []
+    comments.map(el => {
+        if (el.parentCommentId && el.beReplied?.length) {
+            const { beReplied, time, ...others } = el
+            arr.push({
+                time,
+                ...beReplied[0],
+                ...beReplied[0]?.user,
+                beReplied: [{
+                    time,
+                    ...others
+                }]
+            })
+        } else {
+            arr.push(el)
+        }
+    })
+    console.log(arr, '123123');
+    return arr
+}
+function CommentList(props) {
     const location = useLocation()
     const { state: query } = location
+    // const query = props
     // console.log(location, 'query');
     const { song, songs, showStatus, isPlay, onChangeShowStatus } = props;
     const [state, setState] = useState({
@@ -33,24 +55,6 @@ function CustomList(props) {
         fetchData({offset: 0 })
     }, [query.id])
     const fetchData = (params) => {
-        const filterComment = (comments) => {
-            let arr = []
-            comments.map(el => {
-                if (el.parentCommentId && el.beReplied?.length) {
-                    const { beReplied, ...others } = el
-                    arr.push({
-                        ...beReplied[0],
-                        ...beReplied[0]?.user,
-                        beReplied: [{
-                            ...others
-                        }]
-                    })
-                } else {
-                    arr.push(el)
-                }
-            })
-            return arr
-        }
         return getComment({id: song.id || query.id, ...params }).then(res => {
             if (res.code === 200) {
                 let {ar, al, name, ...others } = {...songs.filter(el => el.id === song.id)[0]}
@@ -69,7 +73,9 @@ function CustomList(props) {
     }
     const { beReplied, ...currentCommit } = state.currentCommit
     return <div className='commit-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
-        {state.coverDetail.picUrl ? <div className='commit-list-top flexbox-h'>
+        {state.coverDetail.picUrl ? <div
+        className='commit-list-top flexbox-h'
+        onClick={() => songs && songs.length && onChangeShowStatus(false)}>
             <Image className='img' src={state.coverDetail.picUrl} />
             <div className="cover-text flexbox-h align-c">
                 <div className="name">{state.coverDetail.name}</div>-
@@ -82,7 +88,7 @@ function CustomList(props) {
                 {
                     state.hotComments.map((el, index) =>
                     <List.Item key={index}>
-                        <CommitItem setShowRepeat={(val) => {
+                        <CommentItem setShowRepeat={(val) => {
                             setShowRepeat(val)
                             setState({
                                 ...state,
@@ -96,7 +102,7 @@ function CustomList(props) {
                 {
                     state.commentList.map((el, index) =>
                     <List.Item key={index}>
-                        <CommitItem setShowRepeat={(val) => {
+                        <CommentItem setShowRepeat={(val) => {
                             setShowRepeat(val)
                             setState({
                                 ...state,
@@ -112,8 +118,7 @@ function CustomList(props) {
         forceRender
         visible={showRepeat}
         bodyStyle={{
-            borderRadius: '10px 10px 0 0',
-            maxHeight: 400
+            borderRadius: '10px 10px 0 0'
         }}
         onMaskClick={() => {
             setShowRepeat(false)
@@ -137,7 +142,7 @@ function CustomList(props) {
             <div className="commit-list repeat">
                 <List className='repeated-user'>
                     <List.Item>
-                        <CommitItem {...currentCommit} />
+                        <CommentItem {...currentCommit} />
                     </List.Item>
                 </List>
                 <div className="repeated-title"
@@ -153,7 +158,7 @@ function CustomList(props) {
                     {
                         beReplied.map((el, index) =>
                         <List.Item key={index}>
-                            <CommitItem {...el} />
+                            <CommentItem {...el} />
                         </List.Item>)
                     }
                 </List> : null}
@@ -161,4 +166,4 @@ function CustomList(props) {
         </Popup>
     </div>
 }
-export default connect(mapStateToProps, mapDispatchToProps)(CustomList)
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList)

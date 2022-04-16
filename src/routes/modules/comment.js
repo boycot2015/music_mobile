@@ -1,15 +1,15 @@
 import {
     UserOutline,
 } from 'antd-mobile-icons'
-import Commit from '@/pages/commit'
+import Comment from '@/pages/comment'
 import SongList from '@/pages/song'
 
 const routes = [
     {
-        key: '/commit',
-        element: <Commit />,
+        key: '/comment',
+        element: <Comment />,
         hideTabBar: true,
-        showPlayer: true,
+        showPlayer: false,
         title: '评论',
     },
 

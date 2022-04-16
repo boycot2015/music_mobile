@@ -1,5 +1,6 @@
 .commit-list {
-    overflow: auto;
+    overflow: hidden;
+    overflow-y: auto;
     padding-bottom: 0!important;
     &-top {
         width: 100%;
@@ -45,6 +46,7 @@
         }
     }
     &.repeat  {
+        max-height: 400px;
         .repeated-user {
             .adm-list-item {
                 border-bottom: 10px solid var(--color-f8);

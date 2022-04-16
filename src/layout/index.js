@@ -89,7 +89,7 @@ function Layout(props) {
   return (
     <Router initialEntries={['/home']}>
         <div className="music-main">
-            <Header { ...songs.filter(el => song.id === el.id)[0] } { ...song } />
+            <Header { ...songs.filter(el => song.id === el.id)[0] } isPlay={isPlay} { ...song } />
             <div className={'music-body'} style={{
                 height: `calc(100vh - ${(currentRoute && currentRoute.showPlayer) || pathname === '/' ? '165px' : '112px'})`
             }}>
