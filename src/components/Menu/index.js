@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { List, Switch, Button, Badge } from 'antd-mobile'
+import { List, Switch, Button, Badge, Image } from 'antd-mobile'
 import {
     CouponOutline,
     PayCircleOutline,
@@ -19,6 +19,7 @@ import {
     MinusCircleOutlined,
     RedditOutlined,
 } from '@ant-design/icons'
+import './style.less'
 const Menu = () => {
     const [menu, setMenu] = useState([
         {
@@ -27,6 +28,11 @@ const Menu = () => {
                 extra: <Badge color="var(--adm-color-primary)" content='2'></Badge>,
                 name: '消息中心',
                 prefix: <MessageOutline />,
+                onClick: () => {}
+            }, {
+                extra: <Badge color="var(--adm-color-primary)" content='2'></Badge>,
+                name: '大唐江流儿',
+                prefix: <Image src={''} />,
                 onClick: () => {}
             }, {
                 extra: <Button color='primary' size='mini' fill="outline" shape="rounded">签到</Button>,
@@ -46,7 +52,10 @@ const Menu = () => {
                 prefix: <CouponOutline />,
                 onClick: () => {}
             }, {
-                extra: '高性能耳机仅69元',
+                extra: <div>
+                    高性能耳机仅69元
+                    <Image src={''} />
+                </div>,
                 name: '商城',
                 prefix: <ShopbagOutline />,
                 onClick: () => {}
@@ -56,7 +65,10 @@ const Menu = () => {
                 prefix: <BehanceOutlined />,
                 onClick: () => {}
             }, {
-                extra: '送你一份好心情',
+                extra: <div>
+                    送你一份好心情
+                    <Image src={''} />
+                </div>,
                 name: '口袋彩铃',
                 disabled: true,
                 prefix: <BellOutline />,
@@ -127,7 +139,7 @@ const Menu = () => {
                 // prefix: <SetOutline />,
                 onClick: () => {}
             }, {
-                extra: <Switch />,
+                // extra: <Switch />,
                 name: '我的订单',
                 // prefix: <SetOutline />
             }, {
@@ -159,15 +171,16 @@ const Menu = () => {
         }
     ])
   return (
-    <div style={{
+    <div className='menu' style={{
         height: '100vh',
         overflow: 'hidden',
         overflowY: 'auto'
     }}>
         {
-            menu.map(item => <List header={item.title} key={item.title}>
+            menu.map(item => <List className='menu-list' header={item.title} key={item.title}>
                 {
                 item.list.map(list => <List.Item
+                    className='menu-list-item'
                 {...list}
                 key={list.name}
                 >{list.name}</List.Item>)

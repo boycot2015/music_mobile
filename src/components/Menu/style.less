@@ -1,67 +1,19 @@
-.song-list {
-    padding-bottom: 0 !important;
-    .cover-main {
-        margin-bottom: 15px;
-        min-height: 415px;
-        position: relative;
-        .cover-text {
-            position: absolute;
-            bottom: 0;
-            z-index: 10;
-            padding: 15px;
-            width: 100%;
-            color: var(--color-white);
-            font-size: var(--size-12);
-            .line {
-                width: 50%;
-                color: var(--color-ccc);
-                margin: 0 auto;
-                margin-bottom: 5px;
-            }
-            .name {
-                font-size: var(--size-20);
-                font-weight: bolder;
-                margin-bottom: 10px;
-            }
-            .description {
-                margin-top: 15px;
-                color: var(--color-ccc);
-            }
+.menu {
+    background-color: var(--color-f8);
+    padding-bottom: 10px;
+    &-list {
+        background-color: var(--color-white);
+        margin: 15px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        .adm-list-body {
+            border-bottom: 0;
+            border-top: 0;
         }
-        .cover-bg {
-            position: absolute;
-            z-index: 3;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(117, 117, 117, 0.8);
+        .adm-list-header {
+            border-bottom: var(--border-bottom);
         }
-        .img {
-            height: auto;
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
-    }
-    &-item {
-        border-bottom: 2px solid transparent;
-        padding-bottom: 5px;
-        position: relative;
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 30px;
-            height: 3px;
-            border-radius: 10px;
-            background-color: transparent;
-            margin-left: -15px;
-        }
-        &.active {
-            color: var(--adm-color-primary);
-            &::after {
-                background-color: var(--adm-color-primary);
-            }
+        &-item {
         }
     }
 }
