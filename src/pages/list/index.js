@@ -9,49 +9,53 @@ import './style.less'
 function CustomList() {
     const location = useLocation()
     const { state: query } = location
-    const [loading, setLoading] = useState(true)
     const [hasMore, setHasMore] = useState(true)
     const [state, setState] = useState({
         activeCate: 0,
         playlists: [],
         cateList: [],
-        offset: 0,
         params: { ...query },
         hotCateList: []
     })
     const fetchData = (params) => {
-        setLoading(true)
         return getPlaylist({...query, ...state.params, limit: 45, order: 'hot', ...params }).then(res => {
-            setLoading(false)
             if (res.code === 200) {
-                setState({
-                    ...state,
-                    offset: ++state.offset || 0,
-                    playlists: params?.offset ? [...state.playlists, ...res.playlists] : res.playlists
-                })
-                setTimeout(() => {
-                    setHasMore(res.more)
-                }, 500);
+                if (state.params.offset) {
+                    setState({
+                        ...state,
+                        params: {...state.params, offset: ++state.params.offset || 0 },
+                        playlists: params?.offset ? [...state.playlists, ...res.playlists] : res.playlists
+                    })
+                    setTimeout(() => {
+                        setHasMore(res.more)
+                    }, 500);
+                } else {
+                    if (!state.params.cat) {
+                        return getCatlist({}).then(cate => {
+                            if (cate.code === 200) {
+                                setState({
+                                    ...state,
+                                    params: {...state.params, offset: 1 },
+                                    playlists: res.playlists,
+                                    hotCateList: [{name: '全部', id: 0}, ...cate.sub?.filter(el => el.hot)],
+                                    cateList: cate.sub
+                                })
+                            }
+                        })
+                    } else {
+                        setState({
+                            ...state,
+                            params: {...state.params, offset: 1 },
+                            playlists: res.playlists,
+                        })
+                    }
+                }
             }
         })
     }
     const loadMore = () =>  {
-        return fetchData({offset: state.offset })
+        return fetchData({offset: state.params.offset })
     }
-    useEffect(() => {
-        const fetchCateData = () => {
-            getCatlist({}).then(cate => {
-                if (cate.code === 200) {
-                    setState({
-                        ...state,
-                        hotCateList: cate.sub?.filter(el => el.hot),
-                        cateList: cate.sub
-                    })
-                }
-            })
-        }
-        fetchCateData()
-    }, [])
     const handleCateChange = (params, index) => {
         setState({
             ...state,
@@ -97,7 +101,7 @@ function CustomList() {
                   )
              }
         </Grid> : null}
-        <InfiniteScroll loadMore={loadMore} threshold={100} hasMore={hasMore} />
+        <InfiniteScroll loadMore={loadMore} threshold={250} hasMore={hasMore} />
     </div>
 }
 export default CustomList

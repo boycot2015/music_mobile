@@ -99,7 +99,7 @@ function Layout(props) {
                     </Route>)}
                 </Routes>
             </div>
-            {((currentRoute && currentRoute.showPlayer) || pathname === '/') && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={currentRoute && !currentRoute.showPlayer} setPlayer={(val) => {
+            {((currentRoute && currentRoute.showPlayer) || pathname === '/') && song.url && <FixedPlayer {...state.audioData} audio={audioRef.current} hidePlayer={currentRoute && !currentRoute.showPlayer} setPlayer={(val) => {
                 setShowPlayer(val);
             }} className={`fixed ${(currentRoute && currentRoute.hideTabBar) || pathname === '/' ? 'fixed-bottom' : ''}`} />}
             <Footer />
