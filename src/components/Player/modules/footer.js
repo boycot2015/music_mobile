@@ -86,7 +86,7 @@ function Footer (props) {
         }
     }
     const changeOrder = () => {
-
+        Toast.show('建设中~')
     }
     const onStepSong =  (currentSongIndex, next = true) => {
         if (!songs.length) return Toast.show('没歌放了喔(⊙_⊙)');

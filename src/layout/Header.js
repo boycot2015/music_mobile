@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { NavBar, SearchBar, Popup } from 'antd-mobile'
+import { NavBar, SearchBar, Popup, Toast } from 'antd-mobile'
 import logo from '../logo.svg';
 import config from '@/config'
 import {
@@ -35,7 +35,7 @@ function Header(props) {
         backArrow={pathname !== '/home'}
         back={pathname !== '/home' ? '' : null}
         left={pathname !== '/home' ? '' : <MenuOutlined onClick={() => setShowMenu(!showMenu)} style={{'fontSize': 20}} />}
-        right={pathname !== '/home' ? '' : <AudioOutline style={{'fontSize': 24}} />}
+        right={pathname !== '/home' ? '' : <AudioOutline onClick={() => Toast.show('建设中~')} style={{'fontSize': 24}} />}
         onBack={() => navigate(-1)}>
             {pathname !== '/home' ? title : '' }
             {/* <img src={logo} className="music-logo" alt="logo" /> */}

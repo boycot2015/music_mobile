@@ -5,7 +5,7 @@ import {
     HeartOutline,
     HeartFill,
 } from 'antd-mobile-icons'
-import { Badge, Popup } from 'antd-mobile'
+import { Badge, Toast } from 'antd-mobile'
 import { useState, useEffect } from 'react'
 import {
     useNavigate,
@@ -29,8 +29,8 @@ function Actions(props) {
         <div className={`icon heart ${star ? 'active' : ''}`} onClick={() => setStar(!star)}>
         {star ? <HeartFill /> : <HeartOutline />}
         </div>
-        <div className="icon">
-            <ArrowDownCircleOutline />
+        <div className="icon" onClick={() => Toast.show('建设中~')}>
+            <ArrowDownCircleOutline  />
         </div>
         <div className="icon" onClick={() => {
             console.log(props, 'props');
@@ -51,7 +51,7 @@ function Actions(props) {
                 <MessageOutline />
             </Badge>
         </div>
-        <div className="icon">
+        <div className="icon" onClick={() => Toast.show('建设中~')}>
             <MoreOutline />
         </div>
         {/* <Popup
