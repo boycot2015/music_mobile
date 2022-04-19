@@ -2,7 +2,7 @@
     padding-bottom: 0 !important;
     .cover-main {
         margin-bottom: 15px;
-        min-height: 415px;
+        min-height: 410px;
         position: relative;
         .cover-text {
             position: absolute;
@@ -40,6 +40,39 @@
             width: 100%;
             position: relative;
             z-index: 2;
+        }
+        &.custom-cover {
+            min-height: 150px;
+            padding: 0 0 0 30px;
+            overflow: hidden;
+            .cover-bg {
+                border-radius: 0 0 50% 50%;
+                background-position: center;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                // -webkit-filter: blur(60px);
+                // filter: blur(60px);
+                -webkit-filter: blur(30px) drop-shadow(16px 16px 20px #000) invert(40%);
+                filter: blur(30px) drop-shadow(16px 16px 20px #000) invert(40%);
+                background-color: var(--color-ccc);
+            }
+            .img {
+                z-index: 10;
+                width: 100px;
+                height: 100px;
+                border-radius: var(--border-radius);
+            }
+            .cover-text {
+                flex: 1;
+                text-align: left;
+                position: relative;
+                .line {
+                    display: none;
+                }
+                .name {
+                    font-size: var(--size-16);
+                }
+            }
         }
     }
     &-item {

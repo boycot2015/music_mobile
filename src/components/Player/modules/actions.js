@@ -1,10 +1,12 @@
 import {
-    MoreOutline,
     MessageOutline,
     ArrowDownCircleOutline,
     HeartOutline,
     HeartFill,
 } from 'antd-mobile-icons'
+import {
+    MoreOutlined,
+} from '@ant-design/icons'
 import { Badge, Toast } from 'antd-mobile'
 import { useState, useEffect } from 'react'
 import {
@@ -52,7 +54,7 @@ function Actions(props) {
             </Badge>
         </div>
         <div className="icon" onClick={() => Toast.show('建设中~')}>
-            <MoreOutline />
+            <MoreOutlined />
         </div>
         {/* <Popup
                 visible={showComment}

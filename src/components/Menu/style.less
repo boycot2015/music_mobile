@@ -1,6 +1,49 @@
 .menu {
-    background-color: var(--color-f8);
     padding-bottom: 10px;
+    &-main {
+        height: calc(100vh - 50px);
+        overflow: hidden;
+        overflow-y: auto;
+        padding-bottom: 10px;
+        background-color: var(--color-f8);
+    }
+    .user-info {
+        height: 50px;
+        color: var(--color-333);
+        font-size: var(--size-16);
+        padding: 0 12px;
+        background-color: var(--color-white);
+        // box-shadow: -30px 100px 10px 20px var(--color-white);
+    }
+    .vip {
+        margin: 15px;
+        color: rgb(211, 183, 141);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        background: linear-gradient(to bottom, var(--color-333), var(--color-666));
+        .top {
+            padding: 10px;
+            border-bottom: 1px solid var(--color-333);
+            padding-bottom: 10px;
+            .title {
+                font-size: var(--size-14);
+                color: var(--color-white);
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            .btn {
+                color: rgb(211, 183, 141);
+                border-color: rgb(211, 183, 141);
+            }
+        }
+        .bottom {
+            padding: 10px;
+            .img {
+                border-radius: 32px;
+                overflow: hidden;
+            }
+        }
+    }
     &-list {
         background-color: var(--color-white);
         margin: 15px;
@@ -12,8 +55,6 @@
         }
         .adm-list-header {
             border-bottom: var(--border-bottom);
-        }
-        &-item {
         }
     }
 }

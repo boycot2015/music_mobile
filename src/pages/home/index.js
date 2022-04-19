@@ -24,15 +24,19 @@ function Home() {
         recommand: [],
         categoryList: [{
             icon: <CalendarOutline />,
+            path: '/category/list',
             name: '每日推荐'
         }, {
             icon: <HeartOutline />,
+            path: '/category/list',
             name: '私人FM'
         }, {
             icon: <FileOutline />,
+            path: '/category/list',
             name: '歌单'
         }, {
             icon: <HistogramOutline />,
+            path: '/song/ph',
             name: '排行榜'
         },
         // {
@@ -41,6 +45,7 @@ function Home() {
         // },
         {
             icon: <MovieOutline />,
+            path: '/category/list',
             name: '数字专辑'
         }]
     })
@@ -72,7 +77,7 @@ function Home() {
         {/* 金刚区 */}
         {state.categoryList.length ? <div className="category-list flexbox-h algin-c just-c" style={{padding: '0 15px'}}>
             {
-                state.categoryList.map((category, index) => <CategoryItem key={index} data={category} />)
+                state.categoryList.map((category, index) => <CategoryItem key={index} data={category} onClick={() => navigate(category.path)} />)
             }
         </div> : <Skeleton animated className={'customSkeleton'} />}
         {/* 推荐歌单 */}

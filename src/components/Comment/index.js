@@ -17,13 +17,6 @@ import {
 import { useState } from 'react'
 function CommitItem(props) {
     const navigate = useNavigate()
-    const toDetail = () => {
-        if (!props.showPlayer) {
-            navigate('/commit', {state: {id: props.data.id}})
-            return
-        }
-        props.showPlayer(true)
-    }
     const [isLiked, setIsLiked] = useState(false)
     const [state, setState] = useState({
         likedCount: props.likedCount
@@ -37,7 +30,7 @@ function CommitItem(props) {
         <div className="userinfo flex4 flexbox-h">
             <div className="text flexbox-v">
                 <div className="nickname">{props.user?.nickname}</div>
-                <div className="time">{new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>
+                {<div className="time">{new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>}
             </div>
             <div onClick={() => {
                 setIsLiked(!isLiked)
@@ -54,7 +47,7 @@ function CommitItem(props) {
         </div>
     </div>
     <div className="bottom">
-        <div className="content">{props.content?.trim().replace(/\s*/g, '')}</div>
+        {props.content ? <div className="content">{props.content?.trim().replace(/\s*/g, '') || '该评论已被删除'}</div> : <span style={{color: 'var(--color-ccc)'}}>该评论已被删除</span>}
         {beReplied?.length && !props.hideRepeat ? <div className="repeat" onClick={() => props.setShowRepeat && props.setShowRepeat(true)}>{beReplied?.length}条回复 <RightOutline /> </div> : null}
     </div>
 </div>

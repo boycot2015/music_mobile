@@ -1,23 +1,33 @@
 import React, {useState} from 'react'
-import { List, Switch, Button, Badge, Image } from 'antd-mobile'
+import { List, Switch, Button, Badge, Image, Ellipsis, Swiper } from 'antd-mobile'
 import {
     CouponOutline,
-    PayCircleOutline,
+    BillOutline,
     SetOutline,
     MessageOutline,
     ShopbagOutline,
     EyeOutline,
     ClockCircleOutline,
     BellOutline,
+    RightOutline,
+    ScanningOutline,
+    FileOutline,
+    TextOutline,
+    ExclamationCircleOutline,
+    CheckShieldOutline,
+    StopOutline,
 } from 'antd-mobile-icons'
 import {
     CloudOutlined,
     BulbOutlined,
-    BehanceOutlined,
+    BoldOutlined,
     BgColorsOutlined,
     CustomerServiceOutlined,
-    MinusCircleOutlined,
     RedditOutlined,
+    BlockOutlined,
+    SecurityScanOutlined,
+    ShareAltOutlined,
+    FileProtectOutlined,
 } from '@ant-design/icons'
 import './style.less'
 const Menu = () => {
@@ -28,11 +38,6 @@ const Menu = () => {
                 extra: <Badge color="var(--adm-color-primary)" content='2'></Badge>,
                 name: '消息中心',
                 prefix: <MessageOutline />,
-                onClick: () => {}
-            }, {
-                extra: <Badge color="var(--adm-color-primary)" content='2'></Badge>,
-                name: '大唐江流儿',
-                prefix: <Image src={''} />,
                 onClick: () => {}
             }, {
                 extra: <Button color='primary' size='mini' fill="outline" shape="rounded">签到</Button>,
@@ -52,9 +57,11 @@ const Menu = () => {
                 prefix: <CouponOutline />,
                 onClick: () => {}
             }, {
-                extra: <div>
-                    高性能耳机仅69元
-                    <Image src={''} />
+                extra: <div className="flexbox-h align-c just-c">
+                    <Ellipsis style={{fontSize: 'var(--size-12)'}} content="高性能耳机仅69元"></Ellipsis>
+                    <Image src={''} style={{
+                        borderRadius: 50, marginLeft: 5
+                    }} />
                 </div>,
                 name: '商城',
                 prefix: <ShopbagOutline />,
@@ -62,12 +69,14 @@ const Menu = () => {
             }, {
                 name: 'Beat专区',
                 disabled: true,
-                prefix: <BehanceOutlined />,
+                prefix: <BoldOutlined />,
                 onClick: () => {}
             }, {
-                extra: <div>
-                    送你一份好心情
-                    <Image src={''} />
+                extra: <div className="flexbox-h align-c just-c">
+                    <Ellipsis style={{fontSize: 'var(--size-12)'}} content="送你一份好心情"></Ellipsis>
+                    <Image src={''} style={{
+                        borderRadius: 50, marginLeft: 5
+                    }}/>
                 </div>,
                 name: '口袋彩铃',
                 disabled: true,
@@ -108,22 +117,22 @@ const Menu = () => {
             }, {
                 name: '在线听歌免流量',
                 extra: '未开启',
-                prefix: <PayCircleOutline />,
+                prefix: <BillOutline />,
                 onClick: () => {}
             }, {
                 name: '添加Siri捷径',
                 extra: '未开启',
-                prefix: <PayCircleOutline />,
+                prefix: <BlockOutlined />,
                 onClick: () => {}
             }, {
                 name: '音乐黑名单',
                 extra: '未开启',
-                prefix: <MinusCircleOutlined />,
+                prefix: <StopOutline />,
                 onClick: () => {}
             }, {
                 name: '青少年模式',
                 extra: '未开启',
-                prefix: <PayCircleOutline />,
+                prefix: <CheckShieldOutline />,
                 onClick: () => {}
             }, {
                 name: '音乐闹钟',
@@ -136,57 +145,115 @@ const Menu = () => {
             title: '其他',
             list: [{
                 name: '我的客服',
-                // prefix: <SetOutline />,
+                prefix: <CustomerServiceOutlined />,
                 onClick: () => {}
             }, {
-                // extra: <Switch />,
                 name: '我的订单',
-                // prefix: <SetOutline />
+                onClick: () => {},
+                prefix: <FileOutline />
             }, {
                 name: '优惠券',
                 extra: '未开启',
-                // prefix: <SetOutline />,
+                prefix: <CouponOutline />,
                 onClick: () => {}
             }, {
                 name: '分享网抑云音乐',
-                // prefix: <SetOutline />,
+                prefix: <ShareAltOutlined />,
                 onClick: () => {}
             }, {
                 name: '个人信息收集与使用清单',
-                // prefix: <SetOutline />,
+                prefix: <FileProtectOutlined />,
                 onClick: () => {}
             }, {
                 name: '个人信息第三方共享清单',
-                // prefix: <SetOutline />,
+                prefix: <TextOutline />,
                 onClick: () => {}
             }, {
                 name: '个人信息与隐私保护',
-                // prefix: <SetOutline />,
+                prefix: <SecurityScanOutlined />,
                 onClick: () => {}
             }, {
                 name: '关于',
-                // prefix: <SetOutline />,
+                prefix: <ExclamationCircleOutline />,
                 onClick: () => {}
             }]
         }
     ])
+    const banners = [{
+        text: '立享21项专属特权 >'
+    }, {
+        text: '今天讲真话 | 礼品卡上新'
+    }, {
+        text: '春意盎然 | 黑胶VIP皮肤上新'
+    }]
   return (
-    <div className='menu' style={{
-        height: '100vh',
-        overflow: 'hidden',
-        overflowY: 'auto'
-    }}>
-        {
-            menu.map(item => <List className='menu-list' header={item.title} key={item.title}>
-                {
-                item.list.map(list => <List.Item
-                    className='menu-list-item'
-                {...list}
-                key={list.name}
-                >{list.name}</List.Item>)
+    <div className='menu'>
+        <div className="user-info flexbox-h align-c just-between">
+            <div className="left flexbox-h align-c just-c">
+                <Image src={''} width={32} height={32} style={{
+                    borderRadius: 32, marginRight: 5
+                }} />
+                <span>大唐江流儿 <RightOutline /></span>
+            </div>
+            <ScanningOutline fontSize={26} style={{color: 'var(--color-333)'}} />
+        </div>
+        <div
+        className="menu-main">
+            <div className="vip">
+                <div className="top flexbox-h align-c just-between" style={{
+                    '--border': 'var(--border-color)'
+                }}>
+                    <div className="text">
+                        <div className="title">尊贵的黑胶VIP</div>
+                        <div className="label">
+                        <Swiper
+                            // ref={SwiperRef}
+                            autoplay
+                            loop
+                            allowTouchMove={false}
+                            indicator={() => null}
+                            direction='vertical'
+                            style={{
+                                '--height': '16px',
+                                overflow: 'hidden'
+                              }}
+                            defaultIndex={0}
+                            >{banners.map((banner, index) => (
+                                <Swiper.Item key={index}>
+                                <div >
+                                    <div
+                                    style={{
+                                        backgroundColor: banner.titleColor
+                                    }}>{banner.text}</div>
+                                </div>
+                                </Swiper.Item>
+                            ))}</Swiper>
+                        </div>
+                    </div>
+                    <Button color='primary' className="btn" size='mini' fill="outline" shape="rounded">会员中心</Button>
+                </div>
+                <div className="bottom flexbox-h align-c just-between">
+                    <div className="desc">9周年狂欢！黑胶VIP首开￥0.19/天</div>
+                    <Image src={''} width={32} height={32} style={{
+                        borderRadius: 32, marginRight: 5
+                    }} />
+                </div>
+            </div>
+            {
+                menu.map(item => <List
+                className='menu-list'
+                header={item.title}
+                key={item.title}>
+                    {
+                    item.list.map(list => <List.Item
+                        className='menu-list-item'
+                    {...list}
+                    key={list.name}
+                    >{list.name}</List.Item>)
+                }
+                </List>)
             }
-            </List>)
-        }
+        </div>
     </div>
   )
 }

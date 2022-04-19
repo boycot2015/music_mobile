@@ -21,7 +21,7 @@ import { mapStateToProps } from '@/redux/dispatch';
         }
         props.showPlayer(true)
     }
-    return <div className={(props.type ? 'type-' + props.type + ' music-grid-item ' : 'music-grid-item ') + (song.id === data.id ? 'active' : '') } onClick={() => toDetail()}>
+    return <div className={(props.type ? 'type-' + props.type + ' music-grid-item ' : 'music-grid-item ') + (song.id === data.id ? 'active ' : ' ') + (props.className ? props.className : '') } onClick={() => toDetail()}>
     {!props.index ? <Image className='img' src={data.picUrl || data.coverImgUrl || data.al?.picUrl} /> : <span className='index'>{props.index}</span>}
     {data.playCount && <div className="play-count">
     <PlayOutline className='play-icon' />
@@ -29,7 +29,7 @@ import { mapStateToProps } from '@/redux/dispatch';
     </div>}
     <div className="text flexbox-v">
         <Ellipsis rows={props.type === 2 ? 1 : 2} className='name' content={data.name} />
-        {data.ar && <Ellipsis rows={1} className='description tl' content={data.ar?.map(el => el.name).join('/') + ' - ' + data.al?.name} />}
+        {data.ar && !props.hideDesc && <Ellipsis rows={1} className='description tl' content={data.ar?.map(el => el.name).join('/') + ' - ' + data.al?.name} />}
     </div>
     {song.id === data.id ? <HistogramOutline fontSize={20} color={'var(--adm-color-primary)'} /> : null}
 </div>

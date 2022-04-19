@@ -9,29 +9,47 @@ import {
     CloseOutline
 } from 'antd-mobile-icons'
 import CommentItem from '@/components/Comment'
-import { getComment, getSongDetail } from '@/api/song'
+import { getComment } from '@/api/song'
 import './style.less'
 const filterComment = (comments) => {
     let arr = []
     comments.map(el => {
         if (el.parentCommentId && el.beReplied?.length) {
             const { beReplied, time, likedCount, ...others } = el
-            arr.push({
-                time,
-                ...beReplied[0],
-                ...beReplied[0]?.user,
-                likedCount,
-                beReplied: [{
+            let existIndex = arr.findIndex(ele => ele.beRepliedCommentId === el.parentCommentId)
+            if (existIndex > -1) {
+                arr[existIndex]?.beReplied.push({
                     time,
                     ...others
-                }]
-            })
+                })
+            } else {
+                arr.push({
+                    time,
+                    ...beReplied[0],
+                    ...beReplied[0]?.user,
+                    likedCount,
+                    beReplied: [{
+                        time,
+                        ...others
+                    }]
+                })
+            }
         } else {
             arr.push(el)
         }
     })
-    // console.log(arr, '123123');
     return arr
+    // let arr2 = []
+    // arr.map(el => {
+    //     let existIndex = arr2.findIndex(ele => ele.beRepliedCommentId === el.commentId)
+    //     if (existIndex > -1) {
+    //         arr2[existIndex].beReplied = [...el.beReplied, arr2[existIndex]?.beReplied]
+    //     } else {
+    //         arr2.push(el)
+    //     }
+    // })
+    // console.log(arr2, '123123');
+    // return arr2
 }
 function CommentList(props) {
     const location = useLocation()

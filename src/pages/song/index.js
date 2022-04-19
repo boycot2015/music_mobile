@@ -49,8 +49,10 @@ function CustomList(props) {
         })
     }
     return <div className='song-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
-        {state.coverDetail.coverImgUrl &&  !props.id ? <div className='cover-main'>
-            <div className="cover-bg"></div>
+        {state.coverDetail.coverImgUrl &&  !props.id ? <div className={`${state.coverDetail.officialPlaylistType === null ? 'custom-cover flexbox-h align-c just-c' : ''} cover-main`}>
+            <div className="cover-bg" style={{
+            backgroundImage: `url(${state.coverDetail.officialPlaylistType === null ? state.coverDetail.coverImgUrl : ''})`
+        }}></div>
             <Image className='img' src={state.coverDetail.coverImgUrl} />
             <div className="cover-text">
                 <div className="name">{state.coverDetail.name}</div>
