@@ -1,23 +1,50 @@
 .ph-list {
-    >.title {
-        font-size: 20px;
-        padding: var(--pading);
-        line-height: 50px;
-        font-weight: bold;
-        text-align: left;
+    background-color: var(--color-f8);
+    .ph-list-content {
+        margin: 15px;
+        background-color: var(--color-white);
+        border-radius: var(--border-radius);
+        >.title {
+            font-size: 20px;
+            padding: var(--pading);
+            line-height: 50px;
+            font-weight: bold;
+            text-align: left;
+        }
+        .music-grid-item {
+            margin-bottom: 0;
+            padding-bottom: 10px;
+            .img {
+                width: 110px;
+                height: 110px;
+            }
+        }
+        &.recommend {
+            margin-top: 0px;
+            box-shadow: 0 -160px 10px 10px var(--color-white);
+            .music-grid-item {
+                .img {
+                    width: 108px;
+                    height: 108px;
+                }
+            }
+        }
     }
     .office {
-        padding:  var(--pading);
+        margin-top: 0;
         background-color: var(--color-f8);
         &-list {
-            margin-top: 20px;
+            margin-top: 10px;
             &-item {
                 background-color: var(--color-white);
                 margin-bottom: 20px;
-                padding: 15px;
+                padding: 15px 0px;
                 border-radius: var(--border-radius);
+                &:last-child {
+                    margin-bottom: 0;
+                }
                 .title {
-                    font-size: 24px;
+                    font-size: 20px;
                     margin-bottom: 10px;
                     font-weight: bold;
                 }
@@ -25,8 +52,35 @@
                     border-radius: var(--border-radius);
                 }
                 .ph-grid.music-grid-item {
+                    margin-bottom: 0;
+                    padding: 5px 0;
+                    border-bottom: 0;
                     .index {
-                        line-height: 20px;
+                        line-height: 16px;
+                        color: var(--color-333);
+                        font-weight: normal;
+                        font-size: var(--size-14);
+                        &::after {
+                            content: '.';
+                            position: absolute;
+                        }
+                    }
+                    .text .name {
+                        font-size: var(--size-14);
+                    }
+                    .img {
+                        width: 180px;
+                        height: 180px;
+                    }
+                }
+                .right {
+                    position: relative;
+                    .update-text {
+                        position: absolute;
+                        top: -15px;
+                        right: 15px;
+                        font-size: var(--size-12);
+                        color: var(--color-999);
                     }
                 }
             }

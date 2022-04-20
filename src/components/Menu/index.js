@@ -16,6 +16,7 @@ import {
     ExclamationCircleOutline,
     CheckShieldOutline,
     StopOutline,
+    TagOutline
 } from 'antd-mobile-icons'
 import {
     CloudOutlined,
@@ -234,9 +235,12 @@ const Menu = () => {
                 </div>
                 <div className="bottom flexbox-h align-c just-between">
                     <div className="desc">9周年狂欢！黑胶VIP首开￥0.19/天</div>
-                    <Image src={''} width={32} height={32} style={{
-                        borderRadius: 32, marginRight: 5
-                    }} />
+                    {/* <Image className='img' src={''} width={32} height={32} style={{
+                        borderRadius: '100%', marginRight: 5
+                    }} /> */}
+                    <div className="img">
+                        <TagOutline />
+                    </div>
                 </div>
             </div>
             {

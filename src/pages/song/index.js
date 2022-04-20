@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
-import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis, Popup } from 'antd-mobile'
+import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis, InfiniteScroll } from 'antd-mobile'
 import {
     useLocation,
   } from 'react-router-dom'
@@ -11,37 +11,60 @@ import './style.less'
 function CustomList(props) {
     const location = useLocation()
     const { state: query } = location
+    console.log(query, 'queryqueryquery');
+    const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(!props.songsList)
     const { onSetSongs, onChangeShowStatus } = props;
     const [state, setState] = useState({
         coverDetail: {},
         playDetail: '',
+        ids: [],
+        offset: 0,
         playlists: props.songsList || []
     })
     let hasFetch = false // 防止多次渲染
+    const fetchData = () => {
+        setLoading(true)
+        return getPlaylistDetail({id: query.id || props.id, type: 1}).then(list => {
+            if (list.code === 200) {
+                let ids = list.playlist?.trackIds?.map(el => el.id) || []
+                return getSongDetail({ ids: ids.join(',') }).then(res => {
+                    setLoading(false)
+                    if (res.code === 200) {
+                        setState({
+                            ...state,
+                            ids,
+                            coverDetail: list.playlist,
+                            playlists: res.songs
+                        })
+                        onSetSongs(res.songs)
+                    }
+                })
+            }
+        })
+    }
     useEffect(() => {
-        const fetchData = () => {
-            setLoading(true)
-            getPlaylistDetail({id: query.id || props.id, type: 1}).then(list => {
-                if (list.code === 200) {
-                    let ids = list.playlist?.trackIds?.map(el => el.id) || []
-                    getSongDetail({ ids: ids.join(',') }).then(res => {
-                        setLoading(false)
-                        if (res.code === 200) {
-                            setState({
-                                ...state,
-                                coverDetail: list.playlist,
-                                playlists: res.songs
-                            })
-                            onSetSongs(res.songs)
-                        }
-                    })
-                }
-            })
-        }
         !hasFetch && !props.songsList && fetchData();
         hasFetch = true
     }, [])
+    // const fetchSongs = () => {
+    //     if (state.offset === 0) {
+    //         return fetchData()
+    //     } else {
+    //         let offset = ++state.offset
+    //         let data = { ids: state.ids.slice(offset * 20, offset * 20 + 20).join(',') }
+    //         return getSongDetail(data).then(res => {
+    //             if (res.code === 200) {
+    //                 setState({
+    //                     ...state,
+    //                     offset: offset,
+    //                     playlists: [...state.playlists, ...res.songs]
+    //                 })
+    //                 setHasMore(res.songs.length > 0)
+    //             }
+    //         })
+    //     }
+    // }
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
             onChangeShowStatus && onChangeShowStatus(false)
@@ -49,14 +72,14 @@ function CustomList(props) {
         })
     }
     return <div className='song-list flexbox-v' style={{"minHeight": 300, ...props.style}}>
-        {state.coverDetail.coverImgUrl &&  !props.id ? <div className={`${state.coverDetail.officialPlaylistType === null ? 'custom-cover flexbox-h align-c just-c' : ''} cover-main`}>
-            <div className="cover-bg" style={{
-            backgroundImage: `url(${state.coverDetail.officialPlaylistType === null ? state.coverDetail.coverImgUrl : ''})`
-        }}></div>
-            <Image className='img' src={state.coverDetail.coverImgUrl} />
+        {state.coverDetail.coverImgUrl &&  !props.id ? <div className={`${!query.office ? 'custom-cover flexbox-h align-c just-c' : ''} cover-main`}>
+            <div className="cover-bg" style={!query.office ? {
+            backgroundImage: `url(${state.playlists[0]?.al?.picUrl || state.coverDetail.coverImgUrl})`
+        } : {}}></div>
+            <Image className='img' src={query.office ? state.playlists[0]?.al?.picUrl : state.coverDetail.coverImgUrl} />
             <div className="cover-text">
                 <div className="name">{state.coverDetail.name}</div>
-                <Divider className='line'>每日更新</Divider>
+                <Divider className='line'>{query.updateFrequency || '每日更新'}</Divider>
                 <Ellipsis rows={2} className="description" content={state.coverDetail.description} />
             </div>
         </div> : <Skeleton animated className={'customSkeleton'} />}
@@ -74,6 +97,7 @@ function CustomList(props) {
                   )
              }
         </Grid> : <DotLoading color='primary' />}
+        {/* <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} /> */}
     </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CustomList)

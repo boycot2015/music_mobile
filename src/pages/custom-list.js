@@ -34,7 +34,7 @@ function CustomList() {
         !hasFetch && fetchData();
         hasFetch = true
     }, [])
-    return <div className='custom-list' style={{"minHeight": 300}}>
+    return <div className='custom-list' style={{"minHeight": 300, paddingTop: 10}}>
         {state.data && state.data.length ? <Grid
             columns={location.state.type === 1 ? 2 : 3}
             style={{

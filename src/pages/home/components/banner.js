@@ -8,14 +8,7 @@ import './banner.less'
 import { getBanner } from '@/api/home'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
-const randomColor = () => {
-    let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f']
-    let str = '#'
-    for (let index = 0; index < 4; index++) {
-        str += arr[Math.ceil(Math.random() * (arr.length - 1))]
-    }
-    return str
-}
+
 function Banner(props) {
     // const colors = [randomColor(), randomColor(), randomColor(), randomColor()]
     let hasFetch = false // 防止多次渲染
