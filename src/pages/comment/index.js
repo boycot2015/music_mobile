@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
-import { List, DotLoading, Image, InfiniteScroll, Skeleton, Ellipsis, Popup } from 'antd-mobile'
+import { List, Image, Skeleton, Ellipsis, Popup } from 'antd-mobile'
+import InfiniteScroll from '@/components/InfiniteScroll'
 import {
     useLocation,
   } from 'react-router-dom'
@@ -39,17 +40,6 @@ const filterComment = (comments) => {
         }
     })
     return arr
-    // let arr2 = []
-    // arr.map(el => {
-    //     let existIndex = arr2.findIndex(ele => ele.beRepliedCommentId === el.commentId)
-    //     if (existIndex > -1) {
-    //         arr2[existIndex].beReplied = [...el.beReplied, arr2[existIndex]?.beReplied]
-    //     } else {
-    //         arr2.push(el)
-    //     }
-    // })
-    // console.log(arr2, '123123');
-    // return arr2
 }
 function CommentList(props) {
     const location = useLocation()
@@ -70,11 +60,8 @@ function CommentList(props) {
     const loadMore = () =>  {
         return fetchData({offset: state.offset })
     }
-    useEffect(() => {
-        fetchData({offset: 0 })
-    }, [query.id])
     const fetchData = (params) => {
-        return getComment({id: song.id || query.id, ...params }).then(res => {
+        return getComment({id: song.id || query.id, limit: 20, ...params }).then(res => {
             if (res.code === 200) {
                 let {ar, al, name, ...others } = {...songs.filter(el => el.id === song.id)[0]}
                 setState({
@@ -84,9 +71,7 @@ function CommentList(props) {
                     commentList: params?.offset ? [...state.commentList, ...filterComment(res.comments)] : filterComment(res.comments),
                     hotComments: res.hotComments ? filterComment(res.hotComments) : state.hotComments
                 })
-                setTimeout(() => {
-                    setHasMore(res.comments.length > 0)
-                }, 500);
+                setHasMore(res.comments.length > 0)
             }
         })
     }

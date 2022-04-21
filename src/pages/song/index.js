@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
-import { Grid, DotLoading, Image, Divider, Skeleton, Ellipsis, InfiniteScroll } from 'antd-mobile'
+import { Grid, Image, Divider, Skeleton, Ellipsis } from 'antd-mobile'
+import InfiniteScroll from '@/components/InfiniteScroll'
 import {
     useLocation,
   } from 'react-router-dom'
@@ -22,18 +23,18 @@ function CustomList(props) {
         offset: 0,
         playlists: props.songsList || []
     })
-    let hasFetch = false // 防止多次渲染
     const fetchData = () => {
         setLoading(true)
         return getPlaylistDetail({id: query.id || props.id, type: 1}).then(list => {
             if (list.code === 200) {
                 let ids = list.playlist?.trackIds?.map(el => el.id) || []
-                return getSongDetail({ ids: ids.join(',') }).then(res => {
+                return getSongDetail({ ids: ids.slice(0, 20).join(',') }).then(res => {
                     setLoading(false)
                     if (res.code === 200) {
                         setState({
                             ...state,
                             ids,
+                            offset: 1,
                             coverDetail: list.playlist,
                             playlists: res.songs
                         })
@@ -43,28 +44,27 @@ function CustomList(props) {
             }
         })
     }
-    useEffect(() => {
-        !hasFetch && !props.songsList && fetchData();
-        hasFetch = true
-    }, [])
-    // const fetchSongs = () => {
-    //     if (state.offset === 0) {
-    //         return fetchData()
-    //     } else {
-    //         let offset = ++state.offset
-    //         let data = { ids: state.ids.slice(offset * 20, offset * 20 + 20).join(',') }
-    //         return getSongDetail(data).then(res => {
-    //             if (res.code === 200) {
-    //                 setState({
-    //                     ...state,
-    //                     offset: offset,
-    //                     playlists: [...state.playlists, ...res.songs]
-    //                 })
-    //                 setHasMore(res.songs.length > 0)
-    //             }
-    //         })
-    //     }
-    // }
+    const fetchSongs = () => {
+        if (state.offset === 0) {
+            return fetchData()
+        } else {
+            let data = { ids: state.ids.slice(state.offset * 20, state.offset * 20 + 20).join(',') }
+            if (data.ids) {
+                return getSongDetail(data).then(res => {
+                    if (res.code === 200) {
+                        setState({
+                            ...state,
+                            offset: ++state.offset,
+                            playlists: [...state.playlists, ...res.songs]
+                        })
+                        setHasMore(res.songs.length > 0)
+                    }
+                })
+            } else {
+                setHasMore(false)
+            }
+        }
+    }
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
             onChangeShowStatus && onChangeShowStatus(false)
@@ -96,8 +96,8 @@ function CustomList(props) {
                   </Grid.Item>
                   )
              }
-        </Grid> : <DotLoading color='primary' />}
-        {/* <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} /> */}
+        </Grid> : null}
+        <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} />
     </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CustomList)

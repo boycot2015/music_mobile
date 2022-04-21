@@ -62,8 +62,11 @@ function Banner(props) {
                 className={'swiper-item'}
                 style={{ background: banner }}
                 onClick={() => {
-                    // navigate(`你点击了卡片 ${index + 1}`)
-                    banner.targetId && props.onChangeSong(banner.targetId)
+                    if (banner.url && banner.url !== null) {
+                        window.open(banner.url, '_blank')
+                    } else if (banner.targetId) {
+                        props.onChangeSong(banner.targetId)
+                    }
                 }}
               >
                 <Image fit={'cover'} src={banner.imageUrl} />

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { Grid, InfiniteScroll, JumboTabs, Popup, DotLoading  } from 'antd-mobile'
+import { useState } from 'react'
+import { Grid, JumboTabs, Popup, DotLoading  } from 'antd-mobile'
+import InfiniteScroll from '@/components/InfiniteScroll'
 import {
     AppstoreOutline
 } from 'antd-mobile-icons'
