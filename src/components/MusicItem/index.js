@@ -29,9 +29,9 @@ import { mapStateToProps } from '@/redux/dispatch';
     {!data.updateFrequency ? <PlayOutline className='play-icon' /> : null}
     {!data.updateFrequency ? formatNum(data.playCount) : data.updateFrequency}
     </div>}
-    <div className="text flexbox-v">
-        <Ellipsis rows={props.type === 2 ? 1 : 2} className='name' content={data.name} />
-        {data.ar && !props.hideDesc && <Ellipsis rows={1} className='description tl' content={data.ar?.map(el => el.name).join('/') + ' - ' + data.al?.name} />}
+    <div className={`text  ${office ? 'flexbox-h align-c flex4' : 'flexbox-v'}`}>
+        <Ellipsis rows={props.type === 2 ? 1 : 2} className='name' style={office && {width: 'auto'}} content={data.name} />
+        {data.ar  && <Ellipsis rows={1} className='description tl' content={office ? '-' + data.ar?.map(el => el.name).join('/') :  data.ar?.map(el => el.name).join('/') + ' — ' + data.al?.name} />}
     </div>
     {showTag ? <div className="tag tc">
         {data.newimported ? '新' : data.order ? <DownFill color='green' /> : '—'}
