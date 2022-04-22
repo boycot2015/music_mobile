@@ -118,6 +118,7 @@ function Footer (props) {
     {!!songs.length && <Popup
         visible={showPlayList}
         forceRender
+        destroyOnClose={true}
         bodyStyle={{
             borderRadius: '10px 10px 0 0'
         }}
@@ -140,7 +141,6 @@ function Footer (props) {
             </h3>
         <PlayList
         {...query}
-        songsList={songs}
         style={{maxHeight: 500, overflowY: 'auto', padding: '20px 0', textAlign: 'center'}}
         setShowPlayList={(val) => setShowPlayList(val)}
         setPlayList={(show, val, playlists) => {

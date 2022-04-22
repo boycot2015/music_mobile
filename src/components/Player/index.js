@@ -106,6 +106,9 @@ function Player(props) {
             />
         </div>
         <Footer audio={props.audio} {...props} />
-    </div> : <DotLoading style={{'color': 'var(--color-white)'}} />
+    </div> : <div className='player music-main  flexbox-v align-c just-c'  style={{'backgroundColor': 'rgba(255, 255, 255, 0.5)', 'height': '100vh'}}>
+    <DotLoading color={'primary'} className="mask tc"
+     />
+        </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Player);
