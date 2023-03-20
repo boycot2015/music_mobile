@@ -5,16 +5,22 @@ import {
   useLocation,
 } from 'react-router-dom'
 import routes from '../routes'
+import config from '@/config'
 const Footer = () => {
   const NavigateTo = useNavigate()
   const location = useLocation()
   const { pathname } = location
 
+  const tabs = routes.filter(el => el.showInTabBar)
   const setRouteActive = (value) => {
+    let cookie = localStorage.getItem(config.appPrefix + '_cookie')
+    if (tabs.filter(el => el.key === value)[0]?.auth && !cookie) {
+        NavigateTo('/login')
+        return
+    }
     NavigateTo(value)
   }
   const currentRoute = routes.filter(el => el.key === pathname)[0]
-  const tabs = routes.filter(el => el.showInTabBar)
   if (currentRoute && currentRoute.hideTabBar) return null
   return (
     <TabBar className={'music-footer'} activeKey={pathname} onChange={value => setRouteActive(value)}>

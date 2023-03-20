@@ -4,6 +4,7 @@ import {
     TeamOutline,
     UserOutline,
 } from 'antd-mobile-icons'
+import Login from '@/pages/login'
 import Home from '@/pages/home'
 import Attention from '@/pages/attention'
 import Message from '@/pages/message'
@@ -24,6 +25,7 @@ const routes = [
     {
         key: '/attention',
         title: '我的关注',
+        auth: true,
         element: <Attention />,
         hideNavBar: true,
         showPlayer: true,
@@ -33,6 +35,7 @@ const routes = [
     {
         key: '/message',
         title: '我的消息',
+        auth: true,
         showInTabBar: true,
         hideNavBar: true,
         showPlayer: true,
@@ -45,6 +48,7 @@ const routes = [
         showInTabBar: true,
         hideNavBar: true,
         title: '我的',
+        auth: true,
         showPlayer: true,
         icon: <UserOutline />,
     },
@@ -57,6 +61,15 @@ const routes = [
         icon: <UserOutline />,
     },
     ...list,
-    ...comment
+    ...comment,
+    {
+        key: '/login',
+        element: <Login />,
+        hideTabBar: true,
+        title: '登录',
+        hideNavBar: true,
+        showPlayer: false,
+        icon: <UserOutline />,
+    },
 ]
 export default routes
