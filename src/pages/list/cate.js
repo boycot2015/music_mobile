@@ -26,8 +26,7 @@ function cate(props) {
             cates.push(temp)
         }
     })
-    console.log(cates, 'props');
-
+    // console.log(cates, 'props');
     return <div className="cate-menu">
         <NavBar
         className="music-header"

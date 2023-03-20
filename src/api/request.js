@@ -125,7 +125,7 @@
    return new Promise((resolve, reject) => {
      switch (fecth) {
        case "get":
-         console.log("begin a get request,and url:", url);
+        //  console.log("begin a get request,and url:", url);
          get(url, param)
            .then(function (response) {
              resolve(response);

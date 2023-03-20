@@ -22,9 +22,16 @@
             box-shadow: 0 -2px 10px  3px var(--color-ccc);
             border-radius: 10px;
             overflow: hidden;
-            width: 120px;
-            height: 120px;
+            // width: 120px;
+            // height: 120px;
+            width: auto;
+            height: auto;
+            min-height: 120px;
             background-color: var(--color-ccc);
+            .adm-image-tip {
+                height: auto;
+                min-height: 120px;
+            }
         }
         .tag {
             flex-basis: 20px;
@@ -47,8 +54,15 @@
         }
         &.type-1 {
             .img {
-                width: 185px;
-                height: 70px;
+                // width: 185px;
+                // height: 70px;
+                width:100%;
+                height: auto;
+                min-height: 70px;
+                .adm-image-tip {
+                    height: auto;
+                    min-height: 70px;
+                }
             }
         }
         &.type-2 {
@@ -77,8 +91,11 @@
             .img {
                 float: left;
                 margin-right: 10px;
-                width: 40px;
-                height: 40px;
+                // width: 40px;
+                // height: 40px;
+                min-height: 40px;
+                width: auto;
+                height: auto;
             }
             .index {
                 float: left;

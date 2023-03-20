@@ -12,7 +12,7 @@ import './style.less'
 function CustomList(props) {
     const location = useLocation()
     const { state: query } = location
-    console.log(query, 'queryqueryquery');
+    // console.log(query, 'queryqueryquery');
     const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(!props.songsList)
     const { onSetSongs, onChangeShowStatus } = props;
