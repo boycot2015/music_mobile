@@ -11,7 +11,8 @@ import { getPlaylistDetail, getSongDetail } from '@/api/song'
 import './style.less'
 function CustomList(props) {
     const location = useLocation()
-    const { state: query } = location
+    let { state: query } = location
+    query = query || {}
     // console.log(query, 'queryqueryquery');
     const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(!props.songsList)
