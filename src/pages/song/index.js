@@ -7,7 +7,6 @@ import PlayList from '@/components/PlayList'
 import {
     useLocation,
   } from 'react-router-dom'
-import MusicItem from '@/components/MusicItem'
 import { getPlaylistDetail, getSongDetail } from '@/api/song'
 import './style.less'
 function CustomList(props) {
@@ -15,7 +14,6 @@ function CustomList(props) {
     let { state: query } = location
     const { onSetSongs, songs, song, onChangeShowStatus, appConfig } = props;
     query = query || {}
-    const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState(true)
     const [state, setState] = useState({
         coverDetail: {},

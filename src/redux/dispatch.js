@@ -1,7 +1,8 @@
 import { changeSong, showPlayer, setIsPlay, setSongs, setUser, setIds } from './action';
 import { getSongUrl } from '@/api/song';
+import http from '@/api/request';
+import appConfig from '@/config';
 import { Toast } from 'antd-mobile';
-
 export function mapDispatchToProps(dispatch) {
     const onChangeSong = async (id) => {
         const song = await getSongUrl({id}).then(result => result.data[0]).catch(err => console.log(err))
@@ -28,8 +29,18 @@ export function mapDispatchToProps(dispatch) {
         dispatch(setIsPlay(status))
     }
 
-    const onSetUser = (status) => {
-        dispatch(setUser(status))
+    const onSetUser = async (userinfo) => {
+        // /user/detail?uid=32953014 /user/account /user/subcount
+        let userDetail = {}
+        if (userinfo) {
+            userDetail = await http('get', '/user/detail', { uid: '32953014' || userinfo.userId })
+            localStorage.setItem(appConfig.appPrefix + 'userInfo', JSON.stringify({ ...userinfo, ...userDetail }))
+        } else {
+            localStorage.removeItem(appConfig.appPrefix + 'userInfo')
+        }
+        dispatch(setUser({ ...userinfo, ...userDetail }))
+        return true;
+
     }
 
     return {
@@ -47,12 +58,18 @@ export function mapDispatchToProps(dispatch) {
 }
 
 export function mapStateToProps(state) {
+    let user = state.user
+    try {
+        user = user.cookie ? user : JSON.parse(localStorage.getItem(appConfig.appPrefix + 'userInfo'))
+    } catch (error) {
+        user = state.user
+    }
     return {
         showStatus: state.showStatus,
         song: state.song,
         songs: state.songs,
         ids: state.ids,
         isPlay: state.isPlay,
-        user: state.user
+        user
     }
 }

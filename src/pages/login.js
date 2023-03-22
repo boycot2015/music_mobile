@@ -1,12 +1,13 @@
 
 import { Button, Form, Input, Dialog, Image } from 'antd-mobile'
 import http from '@/api/request'
-import config from '@/config'
 import {
     useNavigate,
     useLocation,
   } from 'react-router-dom'
-function Login() {
+import { connect } from 'react-redux'
+import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
+function Login(props) {
     const NavigateTo = useNavigate()
     const [form] = Form.useForm()
     const onSubmit = () => {
@@ -34,10 +35,10 @@ function Login() {
         // /login/cellphone 验证码登录
         http('get', '/register/anonimous', values).then(res => {
             // {code: 200, data: true}
-            // console.log(res, 'res');
             if (res.code === 200) {
-                localStorage.setItem(config.appPrefix + '_cookie', res.cookie)
-                NavigateTo('/userCenter')
+                props.onSetUser(res).then(() => {
+                    NavigateTo('/my')
+                })
             }
         })
     }
@@ -70,6 +71,7 @@ function Login() {
               }
             >
                 <Form.Header>
+                    {/* /logo512.png */}
                     <Image onClick={() => NavigateTo('/')} style={{height: '2rem', width: '2rem', margin: '2rem auto 2rem'}} src={'/logo512.png'} />
                 </Form.Header>
                 <Form.Item label='手机号' name='phone'>
@@ -82,4 +84,4 @@ function Login() {
         </>
     </div>
   }
-export default Login
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

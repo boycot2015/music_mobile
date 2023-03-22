@@ -29,25 +29,26 @@ function Header(props) {
         title = props.name + ' - ' + props.ar?.map(el => el.name).join('/')
         props.isPlay && (document.title = '正在播放：' + title)
     }
+    const { navConfig = {} } = currentRoute
   return (
     <div className="music-header">
         <NavBar className="music-header"
-        backArrow={pathname !== '/home'}
-        back={pathname !== '/home' ? '' : null}
-        left={pathname !== '/home' ? '' : <MenuOutlined onClick={() => setShowMenu(!showMenu)} style={{'fontSize': 20}} />}
-        right={pathname !== '/home' ? '' : <AudioOutline onClick={() => Toast.show('建设中~')} style={{'fontSize': 24}} />}
+        backArrow={!navConfig.backArrow}
+        back={!navConfig.backArrow ? '' : null}
+        left={navConfig.showMenu ? <MenuOutlined onClick={() => setShowMenu(!showMenu)} style={{'fontSize': 20}} /> : navConfig.left instanceof Function ? navConfig.left(navigate) : navConfig.left || '' }
+        right={navConfig.right ? navConfig.right instanceof Function ? navConfig.right(navigate) : navConfig.right : ''}
         onBack={() => navigate(-1)}>
-            {pathname !== '/home' ? title : '' }
             {/* <img src={logo} className="music-logo" alt="logo" /> */}
-            {pathname === '/home' && <SearchBar
+            {navConfig.showSearch ? <SearchBar
                 placeholder='搜索音乐、歌手、歌单'
+                onSearch={() => navigate('/search')}
                 style={{
                 //   '--background': '#ffffff',
                 '--border-radius': '50px',
                 padding: 0,
                 margin: '15px 0'
             }}
-            />}
+            /> : navConfig.hideTitle ? '' : title || ''}
 
         </NavBar>
             <Popup

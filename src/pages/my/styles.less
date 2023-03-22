@@ -1,0 +1,72 @@
+.my {
+    position: relative;
+    padding-top: 15px;
+    .avatar {
+        position: absolute;
+        top: -35px;
+        .adm-avatar.adm-image {
+            width: 56px;
+            height: 56px;
+        }
+    }
+    .info {
+        margin-top: 15px;
+        height: 60px;
+        .name {
+            font-size: 22px;
+            margin-right: 10px;
+        }
+    }
+    .others {
+        >div {
+            margin:  0 10px;
+            font-size: 14px;
+            color: #666;
+            span {
+                margin-right: 5px;
+            }
+        }
+    }
+    .apps {
+        &-list {
+            .icon {
+                font-size: 32px;
+                --text-color: var(--adm-color-white);
+                color: var(--adm-color-primary);
+            }
+            .name {
+                color: #666;
+            }
+        }
+        .footer {
+            margin-top: 15px;
+            padding-top: 11px;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 16px;
+            .icon {
+                margin-right: 10px;
+            }
+        }
+    }
+    .favirous {
+        margin-top: 16px;
+        padding: 0 16px;
+        .adm-list,
+        .adm-list-item,
+        .adm-list-item-content {
+            --border-top: 0;
+            --border-bottom: 0;
+            --border-inner: 0;
+            border-top: 0;
+            .adm-list-item-content-main {
+                .adm-list-item-description {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+}

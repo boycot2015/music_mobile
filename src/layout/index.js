@@ -2,7 +2,7 @@ import {
     Route,
     Routes,
     BrowserRouter as Router,
-    Navigate
+    Navigate,
   } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import routes from '../routes'
@@ -15,7 +15,6 @@ import './layout.less'
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import { Popup, Toast } from 'antd-mobile'
 import { connect } from 'react-redux'
-
 function Layout(props) {
     const audioRef = useRef()
     const [state, setState] = useState({
@@ -25,6 +24,7 @@ function Layout(props) {
             duration: 0
         }
     })
+    const cookie = props.user?.cookie
     const { isPlay, songs, song, onPauseOrPlay } = props
     const [showPlayer, setShowPlayer] = useState(props.showStatus)
     const { pathname } = window.location
@@ -95,7 +95,7 @@ function Layout(props) {
             }}>
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/home'} />} />
-                    {routes.map(el => <Route key={el.key} path={el.key} element={el.element}>
+                    {routes.map(el => el.auth && !cookie ? <Route path='*' key={el.key} element={<Navigate to='/login' replace />} /> : <Route key={el.key} path={el.key} element={el.element}>
                     </Route>)}
                 </Routes>
             </div>

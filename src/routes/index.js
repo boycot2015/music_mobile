@@ -3,15 +3,24 @@ import {
     MessageOutline,
     TeamOutline,
     UserOutline,
+    AudioOutline,
+    SearchOutline,
 } from 'antd-mobile-icons'
+import {
+    useNavigate,
+  } from 'react-router-dom'
 import Login from '@/pages/login'
 import Home from '@/pages/home'
 import Attention from '@/pages/attention'
 import Message from '@/pages/message'
-import PersonalCenter from '@/pages/userCenter'
+import My from '@/pages/my'
 import CustomList from '@/pages/custom-list'
+
 import list from './modules/list'
 import comment from './modules/comment'
+import search from './modules/search'
+import SearchBar from '@/pages/search/components/searchBar'
+import { Toast, NavBar } from 'antd-mobile'
 const routes = [
     {
         key: '/home',
@@ -19,6 +28,12 @@ const routes = [
         element: <Home />,
         showPlayer: true,
         // hideNavBar: true,
+        navConfig: {
+            backArrow: -1,
+            showMenu: true,
+            showSearch: true,
+            right: <AudioOutline onClick={() => Toast.show('建设中~')} style={{'fontSize': 24}} />
+        },
         showInTabBar: true,
         icon: <AppOutline />,
     },
@@ -29,7 +44,7 @@ const routes = [
         element: <Attention />,
         hideNavBar: true,
         showPlayer: true,
-        showInTabBar: true,
+        showInTabBar: false,
         icon: <TeamOutline />,
     },
     {
@@ -43,14 +58,25 @@ const routes = [
         icon: <MessageOutline />,
     },
     {
-        key: '/userCenter',
-        element: <PersonalCenter />,
+        key: '/my',
+        element: <My />,
         showInTabBar: true,
-        hideNavBar: true,
+        // hideNavBar: true,
         title: '我的',
         auth: true,
         showPlayer: true,
         icon: <UserOutline />,
+        navConfig: {
+            backArrow: -1,
+            showMenu: true,
+            hideTitle: true,
+            showSearch: false,
+            right: (navigate) => {
+                return <SearchOutline onClick={() => {
+                    navigate('/search')
+                }} style={{'fontSize': 24}} />
+            }
+        },
     },
     {
         key: '/custom/list',
@@ -60,6 +86,7 @@ const routes = [
         showPlayer: true,
         icon: <UserOutline />,
     },
+    ...search,
     ...list,
     ...comment,
     {
