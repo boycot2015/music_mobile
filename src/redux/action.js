@@ -13,8 +13,12 @@ export function removeSong(id) {
 	return {type: ActionTypes.REMOVE_SONG_FROM_LIST, id};
 }
 export function setSongs(songs) {
-	return {type: ActionTypes.SET_SONGS, songs};
+	return {type: ActionTypes.SET_SONGS, songs };
 }
+export function setIds(ids) {
+	return {type: ActionTypes.SET_IDS, ids };
+}
+
 export function setIsPlay(status) {
 	return {type: ActionTypes.IS_PLAY, status};
 }

@@ -10,6 +10,7 @@ const initialState = {
         showStatus: false,  //显示状态
         song: {},  //当前歌曲
         songs: [],  //歌曲列表
+        ids: [],
         isPlay: false, //播放状态
         user: {} //登录状态
     };
@@ -63,13 +64,23 @@ function songs(songs = initialState.songs, action) {
             return songs;
     }
 }
+//添加或移除歌曲ids
+function ids(ids = initialState.ids, action) {
+    switch (action.type) {
+        case ActionTypes.SET_IDS:
+            return action.ids;
+        default:
+            return ids;
+    }
+}
 //合并Reducer
 const reducer = combineReducers({
     user,
     isPlay,
     showStatus,
     song,
-    songs
+    songs,
+    ids
 });
 
 export default reducer;

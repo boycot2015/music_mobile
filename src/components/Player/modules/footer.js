@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, createRef, useState } from 'react'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
 import './footer.less'
@@ -17,12 +17,13 @@ import {
     useLocation
   } from 'react-router-dom'
 import { Toast, Image, Popup } from 'antd-mobile'
-import PlayList from '@/pages/song';
-function Footer (props) {
-    const { isPlay, songs, song, onPauseOrPlay, audio } = props
+import PlayList from '@/components/PlayList'
+const Footer = (props, ref) => {
+    const { isPlay, songs, song, ids, onPauseOrPlay, audio } = props
     const [showPlayList, setShowPlayList] = useState(false)
     const location = useLocation()
     const { state: query } = location
+    const playListRef = createRef(null)
     const currentSongDetail = songs.filter(el => el.id === song.id)[0]
     const [state, setState] = useState({
         playerIcons: [{
@@ -54,7 +55,8 @@ function Footer (props) {
             key: 'list',
             className: 'list-icon',
             title: '播放列表'
-        }]
+        }],
+        playlists: songs
     })
     const handlePlay = (type) => {
         switch (type.key) {
@@ -70,6 +72,8 @@ function Footer (props) {
                 break;
                 case 'list':
                     setShowPlayList(true)
+                    playListRef?.current?.fetchSongs(true)
+                    // console.log(playListRef.current, 'props.ids-----2');
                 break;
             default:
                 break;
@@ -140,12 +144,11 @@ function Footer (props) {
             }} className='fr' />
             </h3>
         <PlayList
-        {...query}
+        ids={props.ids}
+        ref={playListRef}
+        setShowPlayList={() => setShowPlayList(false)}
         style={{maxHeight: 500, overflowY: 'auto', padding: '20px 0', textAlign: 'center'}}
-        setShowPlayList={(val) => setShowPlayList(val)}
-        setPlayList={(show, val, playlists) => {
-            setShowPlayList(false)
-        }} />
+        />
     </Popup>}
 </div>
 }

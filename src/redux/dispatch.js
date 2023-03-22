@@ -1,4 +1,4 @@
-import { changeSong, showPlayer, setIsPlay, setSongs, setUser } from './action';
+import { changeSong, showPlayer, setIsPlay, setSongs, setUser, setIds } from './action';
 import { getSongUrl } from '@/api/song';
 import { Toast } from 'antd-mobile';
 
@@ -14,8 +14,9 @@ export function mapDispatchToProps(dispatch) {
         return true;
     }
 
-    const onSetSongs = (songs) => {
+    const onSetSongs = ({ songs, ids }) => {
         dispatch(setSongs(songs));
+        ids && dispatch(setIds(ids));
         // onChangeSong(songs[0].id);
     }
 
@@ -50,6 +51,7 @@ export function mapStateToProps(state) {
         showStatus: state.showStatus,
         song: state.song,
         songs: state.songs,
+        ids: state.ids,
         isPlay: state.isPlay,
         user: state.user
     }

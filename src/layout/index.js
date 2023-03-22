@@ -106,6 +106,7 @@ function Layout(props) {
             <Popup
                 forceRender
                 visible={showPlayer}
+                destroyOnClose={true}
                 onMaskClick={() => {
                     setShowPlayer(false)
             }}>
