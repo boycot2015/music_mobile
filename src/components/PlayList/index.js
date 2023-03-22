@@ -12,7 +12,7 @@ import './style.less'
 function PlayList(props, ref) {
     // const location = useLocation()
     // let { state: query } = location
-    const { onSetSongs, songs, ids, onChangeShowStatus, appConfig } = props;
+    const { onSetSongs, songs, songIds, ids, onChangeShowStatus, appConfig } = props;
     // query = query || {}
     const [hasMore, setHasMore] = useState(true)
     // const [loading, setLoading] = useState(true)
@@ -26,7 +26,7 @@ function PlayList(props, ref) {
     )
     const fetchSongs = (refresh) => {
         let offset = refresh ? 0 : state.offset
-        let data = { ids: ids.slice(offset * 20, offset * 20 + 20).join(',') }
+        let data = { ids: (songIds || ids).slice(offset * 20, offset * 20 + 20).join(',') }
         if (data.ids) {
             return getSongDetail(data).then(res => {
                 if (res.code === 200) {
@@ -44,10 +44,10 @@ function PlayList(props, ref) {
     }
     useEffect(() => {
         fetchSongs()
-    }, [ids.length])
+    }, [])
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
-            onSetSongs({ songs: songs, ids: props.ids })
+            onSetSongs({ songs: songs, ids: songIds || props.ids })
             props.setPlayList && props.setPlayList(state.playlists)
             onChangeShowStatus && onChangeShowStatus(false)
             props.setShowPlayList && props.setShowPlayList(false)

@@ -79,7 +79,7 @@ function PersonalCenter(props) {
     ]
     // console.log(props.user, 'props.user');
     return <div className='flexbox-v align-c my' style={{backgroundColor: '#f8f8f8'}}>
-        <div className='content' style={{height: '100%', width: '100%'}}>
+        <div className='content' style={{width: '100%'}}>
             <Card
             title={null}
             style={{textAlign: 'center', width: '100%', backgroundColor: '#f8f8f8'}}
@@ -128,7 +128,7 @@ function PersonalCenter(props) {
                     <List.Item
                     prefix={<Avatar style={{'--border-radius': '10px'}} src={props.user?.profile?.avatarUrl || ''} />}
                     extra='心动模式'
-                    description={'760首，已下载70首'}
+                    description={`${props.user?.profile?.playlistCount || 0}首，已下载${props.user?.profile?.eventCount || 0}首`}
                     >
                         我喜欢的音乐
                     </List.Item>
@@ -136,7 +136,7 @@ function PersonalCenter(props) {
             </Card>
             {/* <Empty description='个人中心，敬请期待'  style={{height: '80%'}} /> */}
         </div>
-        <Button block color='primary' style={{width: '80%'}} onClick={onLogout} size='middle'>
+        <Button block color='primary' style={{width: '80%'}} onClick={onLogout} size='large'>
             退出登录
         </Button>
     </div>

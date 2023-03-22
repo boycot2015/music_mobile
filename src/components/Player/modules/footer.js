@@ -72,7 +72,9 @@ const Footer = (props, ref) => {
                 break;
                 case 'list':
                     setShowPlayList(true)
-                    playListRef?.current?.fetchSongs(true)
+                    if (ids.includes(song.id)) {
+                        playListRef?.current?.fetchSongs(true)
+                    }
                     // console.log(playListRef.current, 'props.ids-----2');
                 break;
             default:

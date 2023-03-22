@@ -65,7 +65,7 @@ function Login(props) {
             form={form}
             mode='card'
             footer={
-                <Button block color='primary' onClick={onSubmit} size='middle'>
+                <Button block color='primary' onClick={onSubmit} size='large'>
                   提交
                 </Button>
               }

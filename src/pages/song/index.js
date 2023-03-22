@@ -37,7 +37,7 @@ function CustomList(props) {
                                 coverDetail: list.playlist,
                                 playlists: res.songs
                             })
-                            onSetSongs({ songs: res.songs, ids })
+                            onSetSongs({ songs: res.songs })
                         }
                         setLoading(false)
                     })
