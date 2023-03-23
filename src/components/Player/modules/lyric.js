@@ -14,7 +14,7 @@ function Actions(props) {
                 })
                 // let scrollHeight = lyricRef.current.parentNode.offsetHeight
                 let topIndex = 6
-                let offsetHeight = (lyricRef.current.children[0].offsetHeight + 11)
+                let offsetHeight = (lyricRef.current.children[0].offsetHeight + 9)
                 let scrollTop = 0
                 scrollTop = (index - topIndex) * offsetHeight
                 if (index < topIndex) {

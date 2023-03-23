@@ -63,11 +63,11 @@ function Apps(props) {
         }
     ]
     // console.log(props.user, 'props.user');
-    return <Card className='apps'
+    return <Card className='my-apps'
     style={{width: '100%', backgroundColor: '#f8f8f8'}}
     bodyStyle={{ borderRadius: '10px', boxShadow: '0 0 10px #e8e8e8', margin: '0', backgroundColor: '#fff' }}
     >
-        <Grid columns={4} gap={12} className='apps-list'>
+        <Grid columns={4} gap={12} className='my-apps-list'>
         {
             items.map(el =>
                 <Grid.Item key={el.name}>

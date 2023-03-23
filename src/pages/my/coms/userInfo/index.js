@@ -18,6 +18,7 @@ function UserInfo(props) {
     // console.log(props.user, 'props.user');
     return <Card
         title={null}
+        className="my-userinfo"
         style={{textAlign: 'center', width: '100%', backgroundColor: '#f8f8f8'}}
         bodyStyle={{ borderRadius: '10px', boxShadow: '0 0 10px #e8e8e8', margin: '16px 0', backgroundColor: '#fff' }}
         >
