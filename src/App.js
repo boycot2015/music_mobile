@@ -6,7 +6,7 @@ function Music() {
         disabledScale()
     }
     return (
-        <div className="music">
+        <div className="music" style={{height: '100vh', overflow: 'hidden'}}>
         <Layout />
         </div>
     );

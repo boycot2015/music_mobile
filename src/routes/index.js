@@ -13,18 +13,17 @@ import Login from '@/pages/login'
 import Home from '@/pages/home'
 import Attention from '@/pages/attention'
 import Message from '@/pages/message'
-import My from '@/pages/my'
 import CustomList from '@/pages/custom-list'
 
 import list from './modules/list'
 import comment from './modules/comment'
 import search from './modules/search'
-import SearchBar from '@/pages/search/components/searchBar'
+import my from './modules/my'
 import { Toast, NavBar } from 'antd-mobile'
 const routes = [
     {
         key: '/home',
-        title: '首页',
+        title: '发现',
         element: <Home />,
         showPlayer: true,
         // hideNavBar: true,
@@ -32,11 +31,12 @@ const routes = [
             backArrow: -1,
             showMenu: true,
             showSearch: true,
-            right: <AudioOutline onClick={() => Toast.show('建设中~')} style={{'fontSize': 24}} />
+            right: <AudioOutline  onClick={() => Toast.show('建设中~')} style={{'fontSize': 28}} />
         },
         showInTabBar: true,
-        icon: <AppOutline />,
+        icon: <i  className='iconmusic icon-music-netease-cloud-fill' style={{'fontSize': 28}} />,
     },
+    ...my,
     {
         key: '/attention',
         title: '我的关注',
@@ -45,7 +45,7 @@ const routes = [
         hideNavBar: true,
         showPlayer: true,
         showInTabBar: false,
-        icon: <TeamOutline />,
+        icon: <TeamOutline style={{'fontSize': 28}} />,
     },
     {
         key: '/message',
@@ -55,28 +55,7 @@ const routes = [
         hideNavBar: true,
         showPlayer: true,
         element: <Message />,
-        icon: <MessageOutline />,
-    },
-    {
-        key: '/my',
-        element: <My />,
-        showInTabBar: true,
-        // hideNavBar: true,
-        title: '我的',
-        auth: true,
-        showPlayer: true,
-        icon: <UserOutline />,
-        navConfig: {
-            backArrow: -1,
-            showMenu: true,
-            hideTitle: true,
-            showSearch: false,
-            right: (navigate) => {
-                return <SearchOutline onClick={() => {
-                    navigate('/search')
-                }} style={{'fontSize': 24}} />
-            }
-        },
+        icon: <MessageOutline style={{'fontSize': 28}} />,
     },
     {
         key: '/custom/list',
@@ -84,7 +63,7 @@ const routes = [
         hideTabBar: true,
         title: '列表',
         showPlayer: true,
-        icon: <UserOutline />,
+        icon: <UserOutline style={{'fontSize': 28}} />,
     },
     ...search,
     ...list,
@@ -96,7 +75,7 @@ const routes = [
         title: '登录',
         hideNavBar: true,
         showPlayer: false,
-        icon: <UserOutline />,
+        icon: <UserOutline style={{'fontSize': 28}} />,
     },
 ]
 export default routes

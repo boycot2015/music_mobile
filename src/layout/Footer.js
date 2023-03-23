@@ -19,7 +19,8 @@ const Footer = () => {
   return (
     <TabBar className={'music-footer'} activeKey={pathname} onChange={value => setRouteActive(value)}>
       {tabs.map(item => (
-        <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
+        // title={<span style={{fontSize: 14}}>{item.title}</span>}
+        <TabBar.Item key={item.key} icon={item.icon} title={<span style={{fontSize: 12}}>{item.title}</span>} />
       ))}
     </TabBar>
   )

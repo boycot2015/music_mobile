@@ -31,13 +31,13 @@ function Header(props) {
     }
     const { navConfig = {} } = currentRoute
   return (
-    <div className="music-header">
+    <div className="music-header" style={{...navConfig.style || {}}}>
         <NavBar className="music-header"
         backArrow={!navConfig.backArrow}
         back={!navConfig.backArrow ? '' : null}
         left={navConfig.showMenu ? <MenuOutlined onClick={() => setShowMenu(!showMenu)} style={{'fontSize': 20}} /> : navConfig.left instanceof Function ? navConfig.left(navigate) : navConfig.left || '' }
         right={navConfig.right ? navConfig.right instanceof Function ? navConfig.right(navigate) : navConfig.right : ''}
-        onBack={() => navigate(-1)}>
+        onBack={() => navigate(-1)} style={{...navConfig.style || {}}}>
             {/* <img src={logo} className="music-logo" alt="logo" /> */}
             {navConfig.showSearch ? <SearchBar
                 placeholder='搜索音乐、歌手、歌单'

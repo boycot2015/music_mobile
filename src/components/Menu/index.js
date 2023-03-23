@@ -18,6 +18,8 @@ import {
     StopOutline,
     TagOutline
 } from 'antd-mobile-icons'
+import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
+import { connect } from 'react-redux'
 import {
     CloudOutlined,
     BulbOutlined,
@@ -31,7 +33,8 @@ import {
     FileProtectOutlined,
 } from '@ant-design/icons'
 import './style.less'
-const Menu = () => {
+const Menu = (props) => {
+    let userInfo = props.user
     const [menu, setMenu] = useState([
         {
             title: '',
@@ -191,10 +194,10 @@ const Menu = () => {
     <div className='menu'>
         <div className="user-info flexbox-h align-c just-between">
             <div className="left flexbox-h align-c just-c">
-                <Image src={''} width={32} height={32} style={{
+                <Image src={userInfo.profile?.avatarUrl || ''} width={32} height={32} style={{
                     borderRadius: 32, marginRight: 5
                 }} />
-                <span>大唐江流儿 <RightOutline /></span>
+                <span>{userInfo.profile?.nickname || '大唐江流儿'} <RightOutline /></span>
             </div>
             <ScanningOutline fontSize={26} style={{color: 'var(--color-333)'}} />
         </div>
@@ -205,7 +208,7 @@ const Menu = () => {
                     '--border': 'var(--border-color)'
                 }}>
                     <div className="text">
-                        <div className="title">尊贵的黑胶VIP</div>
+                        {userInfo.profile?.vipType && <div className="title">尊贵的黑胶VIP</div>}
                         <div className="label">
                         <Swiper
                             // ref={SwiperRef}
@@ -261,4 +264,4 @@ const Menu = () => {
     </div>
   )
 }
-export default Menu
+export default connect(mapStateToProps, mapDispatchToProps)(Menu)

@@ -30,15 +30,23 @@ export function mapDispatchToProps(dispatch) {
     }
 
     const onSetUser = async (userinfo) => {
-        // /user/detail?uid=32953014 /user/account /user/subcount
+        // /user/detail?uid=32953014 /user/detail /user/playlist
+        // let = uid = userinfo.userId
+        let uids = [131758421, 32953014]
+        // let uid = 32953014
+        let uid = uids[Math.floor(Math.random() * uids.length)]
+        console.log(uid, 'uid');
         let userDetail = {}
+        let playlist = {}
+        let params = { uid }
         if (userinfo) {
-            userDetail = await http('get', '/user/detail', { uid: '32953014' || userinfo.userId })
-            localStorage.setItem(appConfig.appPrefix + 'userInfo', JSON.stringify({ ...userinfo, ...userDetail }))
+            userDetail = await http('get', '/user/detail', params)
+            playlist = await http('get', '/user/playlist', params)
+            localStorage.setItem(appConfig.appPrefix + 'userInfo', JSON.stringify({ ...userinfo, ...userDetail, ...playlist }))
         } else {
             localStorage.removeItem(appConfig.appPrefix + 'userInfo')
         }
-        dispatch(setUser({ ...userinfo, ...userDetail }))
+        dispatch(setUser({ ...userinfo, ...userDetail, ...playlist }))
         return true;
 
     }

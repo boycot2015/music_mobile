@@ -91,7 +91,8 @@ function Layout(props) {
         <div className="music-main">
             <Header { ...songs.filter(el => song.id === el.id)[0] } isPlay={isPlay} { ...song } />
             <div className={'music-body'} style={{
-                height: `calc(100vh - ${(currentRoute && currentRoute.showPlayer) || pathname === '/' ? '165px' : '112px'})`
+                height: `calc(100vh - ${(currentRoute && currentRoute.showPlayer) || pathname === '/' ? '165px' : '112px'})`,
+                overflow: 'hidden'
             }}>
                 <Routes>
                     <Route path={'/'} element={<Navigate to={'/home'} />} />
