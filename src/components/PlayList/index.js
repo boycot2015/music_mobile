@@ -1,7 +1,7 @@
 import { useState, useEffect, useImperativeHandle, forwardRef } from 'react'
 import { connect } from 'react-redux';
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch';
-import { Grid, Image, Divider, Skeleton, Ellipsis } from 'antd-mobile'
+import { Grid, Image, Empty, Skeleton, Ellipsis } from 'antd-mobile'
 import InfiniteScroll from '@/components/InfiniteScroll'
 import {
     useLocation,
@@ -15,9 +15,9 @@ function PlayList(props, ref) {
     const { onSetSongs, songs, songIds, ids, onChangeShowStatus, appConfig } = props;
     // query = query || {}
     const [hasMore, setHasMore] = useState(true)
-    // const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [state, setState] = useState({
-        offset: 1,
+        offset: 0,
         playlists: songs || []
     })
     useImperativeHandle(
@@ -28,6 +28,7 @@ function PlayList(props, ref) {
         let offset = refresh ? 0 : state.offset
         let data = { ids: (songIds || ids).slice(offset * 20, offset * 20 + 20).join(',') }
         if (data.ids) {
+            setLoading(!state.offset)
             return getSongDetail(data).then(res => {
                 if (res.code === 200) {
                     setState({
@@ -35,11 +36,13 @@ function PlayList(props, ref) {
                         offset: ++offset,
                         playlists: refresh ? res.songs : [...state.playlists, ...res.songs].filter((el, index, self) => self.findIndex(_ => el.id === _.id) === index)
                     })
+                    setLoading(false)
                     setHasMore(res.songs.length > 0)
                 }
             })
         } else {
             setHasMore(false)
+            setLoading(false)
         }
     }
     useEffect(() => {
@@ -47,14 +50,14 @@ function PlayList(props, ref) {
     }, [])
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
-            onSetSongs({ songs: songs, ids: songIds || props.ids })
+            onSetSongs({ songs: state.playlists, ids: songIds || props.ids })
             props.setPlayList && props.setPlayList(state.playlists)
             onChangeShowStatus && onChangeShowStatus(false)
             props.setShowPlayList && props.setShowPlayList(false)
         })
     }
     return <div className='play-list' style={{"minHeight": 300, ...props.style}}>
-        {(state.playlists && state.playlists.length) ? <Grid
+        {(state.playlists && state.playlists.length) && !loading ? <Grid
             columns={1}
             style={{
                 padding: '0 15px'
@@ -67,8 +70,8 @@ function PlayList(props, ref) {
                   </Grid.Item>
                   )
              }
-        </Grid> : null}
-        <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} />
+        </Grid> : !hasMore && <Empty description={props.emptyText || '暂无数据'} />}
+        {hasMore ? <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} /> : null}
     </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(forwardRef(PlayList))

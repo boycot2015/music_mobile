@@ -37,3 +37,40 @@
         }
     }
 }
+.tabsContainer {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -27px;
+    z-index: 100;
+    padding: 0 12px;
+    margin: 16px 0 3px;
+    background: var(--color-f8);
+    .adm-tabs {
+        overflow: hidden;
+        border-radius: 8px;
+        // box-shadow: 0 0 10px #e8e8e8;
+        // background: var(--color-white);
+        .adm-tabs-header {
+            border-bottom: 0;
+        }
+        .adm-tabs-tab-wrapper  {
+            // position: relative;
+            // &::before {
+            //     content: '';
+            //     height: 16px;
+            //     position: absolute;
+            //     right: 0;
+            //     top: 50%;
+            //     transform: translateY(-8px);
+            //     background-color: #666;
+            //     width: 2px;
+            // }
+            // &:last-child::before {
+            //     width: 0;
+            // }
+            &.active {
+                color: var(--adm-color-primary);
+            }
+        }
+    }
+  }

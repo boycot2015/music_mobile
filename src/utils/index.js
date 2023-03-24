@@ -1,8 +1,28 @@
 
-function calculateDaysBetweenDates(begin, end) {
-
-}
-
+/**
+ * @desc  函数防抖---“立即执行版本” 和 “非立即执行版本” 的组合版本
+ * @param  func 需要执行的函数
+ * @param  wait 延迟执行时间（毫秒）
+ * @param  immediate---true 表立即执行，false 表非立即执行
+ **/
+ export const debounce = (func, wait, immediate) => {
+    let timer;
+    return function () {
+        let args = arguments;
+        if (timer) clearTimeout(timer);
+        if (immediate) {
+            let callNow = !timer;
+            timer = setTimeout(() => {
+                timer = null;
+            }, wait)
+            if (callNow) func.apply(this, args)
+        } else {
+            timer = setTimeout(function() {
+                func.apply(this, args)
+            }, wait);
+        }
+    }
+ }
 
 /**
  * 格式化数字为 万、亿

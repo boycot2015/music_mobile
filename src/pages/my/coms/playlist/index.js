@@ -1,12 +1,17 @@
 
 
-import { List, Grid, Avatar, Button, Card } from 'antd-mobile'
+import { List, Tabs, Avatar, Button, Card } from 'antd-mobile'
 import {
     useNavigate,
   } from 'react-router-dom'
+import {
+    useState,
+    useEffect } from 'react'
 import { connect } from 'react-redux'
 import './styles.less'
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch'
+import { debounce } from '@/utils'
+
 function MyPlayList(props) {
     const navigate = useNavigate()
     // console.log(props.user, 'props.user');
@@ -16,7 +21,7 @@ function MyPlayList(props) {
         el.isMyCreated = el.creator.userId === profile.userId
         return el
     })
-    playlist = [{data: playlist.filter(el => el.isMyCreated), title: '创建的歌单'}, {data: playlist.filter(el => !el.isMyCreated), title: '收藏的歌单'}]
+    playlist = [{key: 1, data: playlist.filter(el => el.isMyCreated), title: '创建歌单'}, {key: 2, data: playlist.filter(el => !el.isMyCreated), title: '收藏歌单'}]
     const toDetail = (e, data) => {
         e.stopPropagation()
         if (!props.showPlayer) {
@@ -25,6 +30,30 @@ function MyPlayList(props) {
         }
         props.showPlayer(true)
     }
+    const tabHeight = 100
+    const [activeKey, setActiveKey] = useState(1)
+    const handleScroll = () => {
+        let currentKey = playlist[0].key
+        for (const item of playlist) {
+            const element = document.getElementById(`anchor-${item.key}`)
+            if (!element) continue
+                const rect = element.getBoundingClientRect()
+            if (rect.top <= tabHeight) {
+                currentKey = item.key
+            } else {
+                break
+            }
+        }
+        console.log(currentKey, 'currentKey');
+        setActiveKey(currentKey)
+    }
+    useEffect(() => {
+        let scrollEl = document.querySelector('.music-body>div')
+        scrollEl.addEventListener('scroll', debounce(handleScroll, 20))
+        return () => {
+            scrollEl.removeEventListener('scroll', debounce(handleScroll, 20))
+        }
+    }, [])
     return <>
         <Card className='favirous'
         style={{textAlign: 'left', width: '100%', backgroundColor: '#f8f8f8'}}
@@ -40,9 +69,27 @@ function MyPlayList(props) {
                 </List.Item>
             </List>
         </Card>
-        <Card className='flexbox-v align-c' bodyClassName='my-play-list' style={{backgroundColor: '#f8f8f8'}}>
+        <div className={'tabsContainer'}>
+            <Tabs
+                style={{
+                    '--fixed-active-line-width': '20px',
+                }}
+                activeLineMode={'fixed'}
+                activeKey={activeKey}
+                onChange={key => {
+                    document.getElementById(`anchor-${key}`)?.scrollIntoView()
+                    setActiveKey(key)
+                }}
+            >
+                {playlist.map(item => (
+                <Tabs.Tab className={item.key === activeKey && 'active'} title={item.title} key={item.key} />
+                ))}
+            </Tabs>
+        </div>
+        <Card bodyClassName='my-play-list' style={{backgroundColor: '#f8f8f8'}}>
             {
-                playlist.map(val => <List  header={`${val.title}(${val.data.length}个)`} key={val.title} className='list'>
+                playlist.map(val => <div id={`anchor-${val.key}`} key={val.key}>
+                    <List  header={<span>{val.title}{`(${val.data.length}个)`}</span>} key={val.key} className='list'>
                 {
                     val.data.map(el =>
                         <List.Item
@@ -56,7 +103,8 @@ function MyPlayList(props) {
                         </List.Item>
                     )
                 }
-            </List>)
+            </List>
+                </div>)
             }
         </Card>
     </>

@@ -1,9 +1,10 @@
 
 
-import { Button } from 'antd-mobile'
+import { Button, Tabs } from 'antd-mobile'
 import {
     useNavigate,
   } from 'react-router-dom'
+
 import config from '@/config'
 import { connect } from 'react-redux'
 import './styles.less'

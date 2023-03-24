@@ -1,6 +1,6 @@
 import {
     AppOutline,
-    MessageOutline,
+    MessageFill,
     TeamOutline,
     UserOutline,
     AudioOutline,
@@ -55,7 +55,7 @@ const routes = [
         hideNavBar: true,
         showPlayer: true,
         element: <Message />,
-        icon: <MessageOutline style={{'fontSize': 28}} />,
+        icon: <MessageFill style={{'fontSize': 28}} />,
     },
     {
         key: '/custom/list',
