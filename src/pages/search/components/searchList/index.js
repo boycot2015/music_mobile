@@ -65,6 +65,7 @@ function SearchList(props) {
             name: '歌词',
             total: 0,
             key: 'song',
+            limit: 100,
             type: 1006,
             data: []
         }, {
@@ -133,10 +134,11 @@ function SearchList(props) {
         })
     }
     useEffect(() => {
-        // state.list.map(el => {
-        //     getData(el.type, el.limit || 20, 1)
-        // })
-        getData(1, 100, 1)
+        state.list.map(el => {
+            if (el.type === 1 || el.type === 1006)
+            getData(el.type, el.limit || 100, 1)
+        })
+        // getData(1, 100, 1)
     }, [query?.key || props.keywords]);
     const handleCateChange = (val) => {
         if (val === state.activeCate) return
@@ -167,7 +169,7 @@ function SearchList(props) {
                 }
             </Tabs>
             {
-                (state.list && state.list.length) && !state.loading ? state.list.map(el => state.activeCate === el.name ?  el.type === 1 && el.data.length ? <PlayList
+                (state.list && state.list.length) && !state.loading ? state.list.map(el => state.activeCate === el.name ?  (el.type === 1 || el.type === 1006) && el.data.length ? <PlayList
                     songIds={[...el.data.map(el => el.id || el.vid || el.userId)]}
                     emptyText={'暂无数据'}
                     ref={playListRef}

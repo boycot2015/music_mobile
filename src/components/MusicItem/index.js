@@ -24,7 +24,7 @@ import { mapStateToProps } from '@/redux/dispatch';
         props.showPlayer(true)
     }
     return <div className={(props.type ? 'type-' + props.type + ' music-grid-item ' : 'music-grid-item ') + (song.id === data.id && data.id ? 'active ' : ' ') + (props.className ? props.className : '') } onClick={(e) => toDetail(e)}>
-    {!props.index ? <Image className='img' src={data.picUrl || data.coverImgUrl || data.coverUrl || data.al?.picUrl} /> : <span className='index'>{props.index}</span>}
+    {!props.index ? <Image className='img' src={data.picUrl || data.cover || data.coverImgUrl || data.coverUrl || data.al?.picUrl} /> : <span className='index'>{props.index}</span>}
     {data.playCount && <div className="play-count">
     {!data.updateFrequency ? <PlayOutline className='play-icon' /> : null}
     {!data.updateFrequency ? formatNum(data.playCount) : data.updateFrequency}

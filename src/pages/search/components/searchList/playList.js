@@ -45,12 +45,7 @@ function SearchPlayList(props) {
     const loadMore = () =>  {
         return fetchData({offset: state.params.offset })
     }
-    return <div className="list-content" style={{
-        maxHeight: 'calc(100vh - 3.9rem)',
-        padding: '0.24rem 0',
-        textAlign: 'center',
-        overflowY: 'auto',
-    }}>
+    return <div className="play-list">
     {(state.playlists && state.playlists.length) ? <Grid
         columns={props?.query?.type === 1002 ? 2 : 3}
         style={{
