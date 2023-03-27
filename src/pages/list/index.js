@@ -75,7 +75,7 @@ function CategoryList() {
         setShowCateMenu(false)
     }
     return <div className='category-list' style={{"minHeight": 300}}>
-            <div className="cate-list">
+            {(state.hotCateList && state.hotCateList.length) ? <div className="cate-list">
                 <JumboTabs
                 onChange={(key) => handleCateChange(key)}
                 activeKey={state.activeCate}
@@ -92,7 +92,7 @@ function CategoryList() {
                 <div className="more-icon" onClick={() => setShowCateMenu(true)}>
                     <AppstoreOutline />
                 </div>
-            </div>
+            </div> : null}
             <div className="cate-content">
                 {(state.playlists && state.playlists.length) ? <Grid
                     columns={3}

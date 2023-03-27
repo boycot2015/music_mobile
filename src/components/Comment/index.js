@@ -9,7 +9,7 @@ import {
     LikeOutlined
 } from '@ant-design/icons'
 // <LikeFilled />
-
+import UserItem from '../UserItem'
 import {
     useNavigate,
     useLocation,
@@ -23,29 +23,7 @@ function CommitItem(props) {
     })
     const { beReplied, ...params } = props
     return <div className={`music-commit-item tl ${params.className}`}>
-    <div className="top flexbox-h align-c just-between">
-        <div className="avatar">
-            <Image style={{borderRadius: '100%'}} width={40} height={40} src={props.user?.avatarUrl} />
-        </div>
-        <div className="userinfo flex4 flexbox-h">
-            <div className="text flexbox-v">
-                <div className="nickname">{props.user?.nickname}</div>
-                {<div className="time">{new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>}
-            </div>
-            <div onClick={() => {
-                setIsLiked(!isLiked)
-                setState({
-                    ...state,
-                    likedCount: !isLiked ? ++state.likedCount : --state.likedCount
-                })
-            }} className="liked-count flexbox-h align-c">
-                {state.likedCount ? <span style={{marginRight: 5}}>{state.likedCount}</span> : null}
-                {isLiked ? <LikeFilled style={{
-                    color: 'var(--adm-color-primary)'
-                }} fontSize={18} /> : <LikeOutlined fontSize={18} />}
-                </div>
-        </div>
-    </div>
+    <UserItem {...props}></UserItem>
     <div className="bottom">
         {props.content ? <div className="content">{props.content?.trim().replace(/\s*/g, '') || '该评论已被删除'}</div> : <span style={{color: 'var(--color-ccc)'}}>该评论已被删除</span>}
         {beReplied?.length && !props.hideRepeat ? <div className="repeat" onClick={() => props.setShowRepeat && props.setShowRepeat(true)}>{beReplied?.length}条回复 <RightOutline /> </div> : null}

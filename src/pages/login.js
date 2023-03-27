@@ -18,21 +18,13 @@ function Login(props) {
     const [disabled, setDisabled] = useState(false)
     const onSubmit = () => {
         const values = form.getFieldsValue()
-        if (!values.phone) {
-            Dialog.alert({
-                content: '请输入手机号',
-            })
-            return
-        }
+        if (!vaildatePhone(values)) return
         if (!values.captcha) {
             Dialog.alert({
                 content: '请输入验证码',
             })
             return
         }
-        // Dialog.alert({
-        //   content: <pre>{JSON.stringify(values, null, 2)}</pre>,
-        // })
         let data = {
             cellphone: values.phone,
             captcha: values.captcha
@@ -86,12 +78,7 @@ function Login(props) {
     }, [])
     const handCaptcha = () => {
         const values = form.getFieldsValue()
-        if (!values.phone) {
-            Dialog.alert({
-                content: '请输入手机号',
-            })
-            return
-        }
+        if (!vaildatePhone(values)) return
         http('get', '/captcha/sent', values).then(res => {
             // {code: 200, data: true}
             if (res) {
@@ -101,13 +88,28 @@ function Login(props) {
         })
         // /captcha/sent
     }
+    const vaildatePhone = (values) => {
+        if (!values.phone) {
+            Dialog.alert({
+                content: '请输入手机号',
+            })
+            return false
+        }
+        if (!/^1[3|4|5|6|7|8|9][0-9]{9}$/.test(values.phone)) {
+            Dialog.alert({
+                content: '请输入正确的手机号',
+            })
+            return false
+        }
+        return true
+    }
     return <div className='flexbox-v align-c'>
         <>
             <Form
             layout='horizontal'
             form={form}
             footer={
-                <Button block color='primary' onClick={onSubmit} size='large'>
+                <Button block color='primary' style={{marginTop: '50px'}} onClick={onSubmit} size='large'>
                   提交
                 </Button>
               }
@@ -117,10 +119,10 @@ function Login(props) {
                     <Image onClick={() => NavigateTo('/')} style={{height: '2rem', width: '2rem', margin: '2rem auto 2rem'}} src={'/logo512.png'} />
                 </Form.Header>
                 <Form.Item label='手机号' style={{textAlign: 'right'}} name='phone'>
-                    <Input placeholder='请输入' />
+                    <Input clearable placeholder='请输入手机号' maxLength={11} />
                 </Form.Item>
-                <Form.Item label='短信验证码'  style={{textAlign: 'right'}} name={'captcha'} extra={<Button disabled={disabled} onClick={handCaptcha} color='primary' fill='none'>{state.codeText}</Button>}>
-                    <Input placeholder='请输入' />
+                <Form.Item label='验证码'  style={{textAlign: 'right'}} name={'captcha'} extra={<Button disabled={disabled} onClick={handCaptcha} style={{fontSize: '16px'}} color='primary' fill='none'>{state.codeText}</Button>}>
+                    <Input maxLength={6} clearable placeholder='请输入验证码' />
                 </Form.Item>
             </Form>
         </>

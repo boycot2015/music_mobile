@@ -41,7 +41,7 @@ function Header(props) {
             {/* <img src={logo} className="music-logo" alt="logo" /> */}
             {navConfig.showSearch ? <SearchBar
                 placeholder='搜索音乐、歌手、歌单'
-                onSearch={() => navigate('/search')}
+                onFocus={() => navigate('/search')}
                 style={{
                 //   '--background': '#ffffff',
                 '--border-radius': '50px',

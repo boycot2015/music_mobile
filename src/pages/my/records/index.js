@@ -17,8 +17,6 @@ import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch'
 function PlayRecordList(props) {
     const navigate = useNavigate()
     // console.log(props.user, 'props.user');
-    const swiperRef = createRef(null)
-    const [activeIndex, setActiveIndex] = useState(0)
     const [state, setState] = useState({
         loading: true,
         activeCate: '单曲',
@@ -55,12 +53,6 @@ function PlayRecordList(props) {
         }]
     });
     const playListRef = createRef(null)
-    let { playlist = [], profile = {} } = props.user
-    playlist = playlist.slice(1,)
-    playlist.map(el => {
-        el.isMyCreated = el.creator.userId === profile.userId
-        return el
-    })
     const getData = (url = '/record/recent/song', limit = 1000, page = 1) => {
         setState((state) => {
             return {
@@ -89,7 +81,6 @@ function PlayRecordList(props) {
     useEffect(() => {
         getData()
     }, []);
-    playlist = [{data: playlist.filter(el => el.isMyCreated), title: '创建的歌单'}, {data: playlist.filter(el => !el.isMyCreated), title: '收藏的歌单'}]
     // const toDetail = (e, data) => {
     //     e.stopPropagation()
     //     if (!props.showPlayer) {
@@ -99,13 +90,12 @@ function PlayRecordList(props) {
     //     props.showPlayer(true)
     // }
     const handleCateChange = (val) => {
+        if (val === state.activeCate) return
         setState({
             ...state,
             activeCate: val
         })
         const index = state.list.findIndex(item => item.name === val)
-        setActiveIndex(index)
-        swiperRef.current?.swipeTo(index)
         getData(state.list.filter(el => el.name === val)[0]?.url, 1000, 1)
     }
     return <div className='flexbox-v my-records'>
@@ -122,16 +112,16 @@ function PlayRecordList(props) {
                     {el.name}
                   </Badge>}
                     description={el.total || ''}
-                    />) : <DotLoading color={'primary'} />
+                    />) : <div style={{marginTop: 20}}><span style={{color: 'var(--adm-color-primary)'}}>加载中</span><DotLoading color={'primary'} /></div>
                 }
             </Tabs>
             {
-                (state.list && state.list.length) ? state.list.map(el => !state.loading && state.activeCate === el.name ?  <PlayList
+                !state.loading && (state.list && state.list.length) ? state.list.map(el => state.activeCate === el.name ?  <PlayList
                     songIds={[...el.data.map(el => el.resourceId)]}
                     emptyText={'暂无播放记录'}
                     ref={playListRef}
                     key={el.name}
-                    /> :  null) : <DotLoading color={'primary'} />
+                    /> :  null) : <div style={{marginTop: 20}}><span style={{color: 'var(--adm-color-primary)'}}>加载中</span><DotLoading color={'primary'} /></div>
             }
         </div>
     </div>
