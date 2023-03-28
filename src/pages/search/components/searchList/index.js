@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 // } from 'antd-mobile-icons'
 import './styles.less'
 import http from '@/api/request'
-import PlayList from '@/components/PlayList'
 import SearchPlayList from './playList'
 
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch'
@@ -97,47 +96,7 @@ function SearchList(props) {
     });
     const location = useLocation()
     let { state: query } = location
-    const playListRef = createRef(null)
-    const getData = (type = 1, limit = 20, page = 1) => {
-        setState((state) => {
-            return {
-                ...state,
-                loading: true,
-            }
-        })
-        http('get', '/cloudsearch', { limit, page, type, keywords: query?.key || props.keywords  || '' }).then(res => {
-            if (res.code !== 200) {
-                setState((state) => {
-                    return {
-                        ...state,
-                        loading: false,
-                    }
-                })
-                return
-            }
-           let list = state.list.map(el => {
-                if (el.type === type) {
-                    el.total = res.result[el.key + 'Count'] || 0
-                    el.data = res.result[el.key + 's'] || []
-                    // el.total = res.result.songCount
-                }
-                return el
-            })
-            setState((state) => {
-                return {
-                    ...state,
-                    loading: !list.length,
-                    list
-                }
-            })
-            // console.log(list, '1232');
-        })
-    }
     useEffect(() => {
-        state.list.map(el => {
-            if (el.type === 1 || el.type === 1006)
-            getData(el.type, el.limit || 100, 1)
-        })
         // getData(1, 100, 1)
     }, [query?.key || props.keywords]);
     const handleCateChange = (val) => {
@@ -147,8 +106,6 @@ function SearchList(props) {
             loading: false,
             activeCate: val
         })
-        // let current = state.list.filter(el => el.name === val)[0]
-        // getData(current?.type, current?.limit || 20, 1)
     }
     return <div className='flexbox-v search-list'>
         <div className="records-list">
@@ -169,12 +126,7 @@ function SearchList(props) {
                 }
             </Tabs>
             {
-                (state.list && state.list.length) && !state.loading ? state.list.map(el => state.activeCate === el.name ?  (el.type === 1 || el.type === 1006) && el.data.length ? <PlayList
-                    songIds={[...el.data.map(el => el.id || el.vid || el.userId)]}
-                    emptyText={'暂无数据'}
-                    ref={playListRef}
-                    key={el.name}
-                    /> : <SearchPlayList key={el.name} query={{ keywords: query?.key || props.keywords, type: el.type, key: el.key }} /> :  null) : <div  style={{marginTop: 20}}><span style={{color: 'var(--adm-color-primary)'}}>加载中</span><DotLoading color={'primary'} /></div>
+                state.list.map(el => state.activeCate === el.name ? <SearchPlayList key={el.name} query={{ keywords: query?.key || props.keywords, type: el.type, key: el.key }} /> : null)
             }
         </div>
     </div>

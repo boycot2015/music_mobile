@@ -19,6 +19,7 @@ import list from './modules/list'
 import comment from './modules/comment'
 import search from './modules/search'
 import my from './modules/my'
+import mv from './modules/mv'
 import { Toast, NavBar } from 'antd-mobile'
 const routes = [
     {
@@ -67,6 +68,7 @@ const routes = [
     },
     ...search,
     ...list,
+    ...mv,
     ...comment,
     {
         key: '/login',

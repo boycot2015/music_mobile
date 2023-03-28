@@ -74,7 +74,7 @@ function PlayList(props, ref) {
                   )
              }
         </Grid> : !hasMore && <Empty description={props.emptyText || '暂无数据'} />}
-        {hasMore ? <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} /> : null}
+        {state.playlists.length ? <InfiniteScroll loadMore={fetchSongs} threshold={250} hasMore={hasMore} /> : null}
     </div>
 }
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(forwardRef(PlayList))
