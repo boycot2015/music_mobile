@@ -1,5 +1,5 @@
 import {
-    UserOutline,
+    UserOutline
 } from 'antd-mobile-icons'
 import MvDetail from '@/pages/mv/detail'
 import MvList from '@/pages/mv'
@@ -18,6 +18,7 @@ const routes = [
         element: <MvDetail />,
         hideTabBar: true,
         showPlayer: false,
+        hideNavBar: true,
         title: 'mv详情',
         icon: <UserOutline />,
     },

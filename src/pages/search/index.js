@@ -4,12 +4,13 @@ import SearchNavBar from './components/searchBar'
 import http from '@/api/request'
 import { useState, useEffect, createRef } from 'react'
 import {
+    useNavigate,
     useLocation,
 } from 'react-router-dom'
-import SearchList from './components/searchList'
 import './styles.less'
 function Search(props) {
     const location = useLocation()
+    const navigate = useNavigate()
     const searchRef = createRef(null)
     let { state: query } = location
     const [state, setState] = useState({
@@ -59,35 +60,24 @@ function Search(props) {
         onSearch()
     }, [query?.key])
     return !state.loading ? <div className={state.keywords ? 'flexbox-v hidden search' : 'flexbox-v search'}>
-        <SearchNavBar ref={searchRef} clearable placeholder={state.showKeyword} keywords={query?.key || state.keywords || ''} onSearch={(key) => onSearch(key)}></SearchNavBar>
+        <SearchNavBar ref={searchRef} clearable placeholder={state.showKeyword} keywords={query?.keywords || state.keywords || ''} onSearch={(keywords) => {
+            navigate('/search/detail', { state: { keywords } })
+        }}></SearchNavBar>
         {!state.keywords && <div className='like-list' columns={4} span={10} style={{textAlign: 'left', margin: '0 15px'}}>
             <div style={{textAlign: 'left', margin: '0 0 15px', fontSize: '16px', color: '#999'}}>猜你喜欢</div>
             {
                 state.hots.map(el =>
                 <Tag onClick={() => {
-                        setState((state) => {
-                            return {
-                                ...state,
-                                showKeyword: el.first,
-                                keywords: el.first
-                            }
-                        })
-                        // searchRef.current.nativeElement.value = el.first
-                    }}
-                    round key={el.first} style={{margin: '0 5px 5px 0', fontSize: '14px'}} color='#999'>{el.first}</Tag>
+                    navigate('/search/detail', { state: { keywords: el.first } })
+                }}
+                round key={el.first} style={{margin: '0 5px 5px 0', fontSize: '14px'}} color='#999'>{el.first}</Tag>
             )
             }
         </div>}
         {!state.keywords && <List header={<div style={{fontSize: '16px'}}>{'热搜榜'}</div>} style={{textAlign: 'left'}}>
         { state.hotsList.map(el =>
                 <List.Item onClick={() => {
-                    setState((state) => {
-                        return {
-                            ...state,
-                            showKeyword: el.searchWord,
-                            keywords: el.searchWord
-                        }
-                    })
+                    navigate('/search/detail', { state: { keywords: el.searchWord } })
                     // searchRef.current.nativeElement.value = el.searchWord
                 }}
                 arrow={false}
@@ -95,8 +85,6 @@ function Search(props) {
                 key={el.searchWord} color='#999'>{el.searchWord}</List.Item>
         )}
         </List>}
-        {state.keywords && <SearchList keywords={state.keywords}></SearchList>}
-        {/* <Empty description='暂无数据~' /> */}
     </div> : <div  style={{marginTop: 20}}><span style={{color: 'var(--adm-color-primary)'}}>加载中</span><DotLoading color={'primary'} /></div>
 }
 export default Search

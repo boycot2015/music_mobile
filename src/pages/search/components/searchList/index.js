@@ -7,11 +7,7 @@ import {
     useLocation,
   } from 'react-router-dom'
 import { connect } from 'react-redux'
-// import {
-//     AppstoreOutline,
-// } from 'antd-mobile-icons'
 import './styles.less'
-import http from '@/api/request'
 import SearchPlayList from './playList'
 
 import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch'
@@ -20,9 +16,11 @@ function SearchList(props) {
     // console.log(props.user, 'props.user');
     // 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000:
     // 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合, 2000:声音(搜索声音返回字段格式会不一样)
+    const location = useLocation()
+    let { state: query } = location
     const [state, setState] = useState({
         loading: true,
-        activeCate: '单曲',
+        activeCate: query.type || 1,
         list: [{
             name: '单曲',
             total: 0,
@@ -94,18 +92,14 @@ function SearchList(props) {
         // }
     ]
     });
-    const location = useLocation()
-    let { state: query } = location
-    useEffect(() => {
-        // getData(1, 100, 1)
-    }, [query?.key || props.keywords]);
     const handleCateChange = (val) => {
-        if (val === state.activeCate) return
+        if (val == state.activeCate) return
         setState({
             ...state,
             loading: false,
             activeCate: val
         })
+        navigate('/search/detail', {state: { keywords: query?.keywords || props.keywords, type: val || query?.type || props.type }})
     }
     return <div className='flexbox-v search-list'>
         <div className="records-list">
@@ -116,7 +110,7 @@ function SearchList(props) {
                 {
                     (state.list && state.list.length) ? state.list.map((el, index) =>
                     <Tabs.Tab
-                    key={el.name}
+                    key={el.type}
                     title={
                     // <Badge content={el.total || ''} style={{ '--right': '-10px', '--top': '8px' }}>
                     //     {el.name}
@@ -126,7 +120,7 @@ function SearchList(props) {
                 }
             </Tabs>
             {
-                state.list.map(el => state.activeCate === el.name ? <SearchPlayList key={el.name} query={{ keywords: query?.key || props.keywords, type: el.type, key: el.key }} /> : null)
+                state.list.map(el => state.activeCate == el.type ? <SearchPlayList key={el.name} query={{ keywords: query?.keywords || props.keywords, type: el.type, key: el.key }} /> : null)
             }
         </div>
     </div>

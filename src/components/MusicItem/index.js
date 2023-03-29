@@ -19,7 +19,7 @@ import { mapStateToProps } from '@/redux/dispatch';
         e.stopPropagation()
         if (!props.showPlayer) {
             console.log(props, 'props');
-            navigate(props.url || '/song/list', {state: {id: data.id, office, updateFrequency: data.updateFrequency }})
+            navigate(props.url || '/song/list', {state: {id: data.id, office, updateFrequency: data.updateFrequency, type: data.type }})
             return
         }
         props.showPlayer(true)
@@ -31,8 +31,9 @@ import { mapStateToProps } from '@/redux/dispatch';
     {!data.updateFrequency ? formatNum(data.playCount) : data.updateFrequency}
     </div>}
     <div className={`text  ${office ? 'flexbox-h align-c flex4' : 'flexbox-v'}`}>
-        <Ellipsis rows={props.type === 2 ? 1 : 2} className='name' style={office && {width: 'auto'}} content={data.name || data.nickname || data.title} />
+        <Ellipsis rows={props.type === 2 ? data.isVideo ? 2 : 1 : 2} className='name' style={office && {width: 'auto'}} content={data.name || data.nickname || data.title} />
         {data.ar  && <Ellipsis rows={1} className='description tl' content={office ? '-' + data.ar?.map(el => el.name).join('/') :  data.ar?.map(el => el.name).join('/') + ' — ' + data.al?.name} />}
+        {data.isVideo && <Ellipsis rows={1} className='description tl' content={data.artistName} />}
     </div>
     {showTag ? <div className="tag tc">
         {data.newimported ? '新' : data.order ? <DownFill color='green' /> : '—'}
