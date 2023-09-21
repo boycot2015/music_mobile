@@ -34,7 +34,7 @@ import {
 } from '@ant-design/icons'
 import './style.less'
 const Menu = (props) => {
-    let userInfo = props.user
+    let userInfo = props.user || {}
     const [menu, setMenu] = useState([
         {
             title: '',

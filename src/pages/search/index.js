@@ -61,7 +61,7 @@ function Search(props) {
     }, [query?.key])
     return !state.loading ? <div className={state.keywords ? 'flexbox-v hidden search' : 'flexbox-v search'}>
         <SearchNavBar ref={searchRef} clearable placeholder={state.showKeyword} keywords={query?.keywords || state.keywords || ''} onSearch={(keywords) => {
-            navigate('/search/detail', { state: { keywords } })
+            keywords && navigate('/search/detail', { state: { keywords } })
         }}></SearchNavBar>
         {!state.keywords && <div className='like-list' columns={4} span={10} style={{textAlign: 'left', margin: '0 15px'}}>
             <div style={{textAlign: 'left', margin: '0 0 15px', fontSize: '16px', color: '#999'}}>猜你喜欢</div>

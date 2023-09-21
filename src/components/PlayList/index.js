@@ -49,8 +49,8 @@ function PlayList(props, ref) {
         }
     }
     useEffect(() => {
-        fetchSongs()
-    }, [])
+        fetchSongs(props.refresh)
+    }, [props.refresh])
     const setPlayDetail = (el) => {
         props.onChangeSong(el.id).then(res => {
             onSetSongs({ songs: state.playlists, ids: songIds || props.ids })

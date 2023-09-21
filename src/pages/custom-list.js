@@ -21,12 +21,12 @@ function CustomList() {
                         data: res.result
                     })
                 }
-            })
-            query.type === 1 && getPrivatecontentList().then(res => {
+            });
+            (query.type === 1 || query.type === 2) && getPrivatecontentList().then(res => {
                 if (res.code === 200) {
                     setState({
                         ...state,
-                        data: res.result
+                        data: query.type === 1 ? res.result.slice(0, 28) : res.result.slice(28)
                     })
                 }
             })
@@ -36,7 +36,7 @@ function CustomList() {
     }, [])
     return <div className='custom-list' style={{"minHeight": 300, paddingTop: 10}}>
         {state.data && state.data.length ? <Grid
-            columns={location.state.type === 1 ? 2 : 3}
+            columns={(query.type === 1 || query.type === 2) ? 2 : 3}
             style={{
                 padding: '0 15px'
             }} className={'music-grid'}
@@ -44,7 +44,7 @@ function CustomList() {
              {
                  state.data.map(el =>
                  <Grid.Item key={el.id}>
-                    <MusicItem type={location.state.type} data={el} />
+                    <MusicItem type={query.type ? 1 : 3} data={el} />
                   </Grid.Item>
                   )
              }

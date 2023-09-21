@@ -18,7 +18,7 @@ import { mapStateToProps } from '@/redux/dispatch';
     const toDetail = (e) => {
         e.stopPropagation()
         if (!props.showPlayer) {
-            console.log(props, 'props');
+            // console.log(props, 'props');
             navigate(props.url || '/song/list', {state: {id: data.id, office, updateFrequency: data.updateFrequency, type: data.type }})
             return
         }

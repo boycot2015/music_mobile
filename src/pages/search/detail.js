@@ -15,7 +15,7 @@ function SearchDetail(props) {
     const navigate = useNavigate()
     let { state: query } = location
     // const playListRef = createRef(null)
-    console.log(location, 'location');
+    // console.log(location, 'location');
     const searchRef = createRef(null)
     const [state, setState] = useState({
         playlists: [],
@@ -24,7 +24,13 @@ function SearchDetail(props) {
     return <div className='flexbox-v search-detail'>
         <NavBar
         className="header"
-        onBack={() => navigate('/search')}>搜索列表</NavBar>
+        onBack={() => {
+            navigate('/search')
+            setState({
+                ...state,
+                params: { keywords: '', offset: 0 }
+            })
+        }}>搜索列表</NavBar>
      <SearchNavBar ref={searchRef} clearable placeholder={query?.keywords || state.keywords || ''} keywords={query?.keywords || state.keywords || ''}
      onSearch={(keywords) => {
          navigate(!keywords ? '/search' : '/search/detail', { state: { keywords } })

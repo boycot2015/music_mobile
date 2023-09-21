@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 import './styles.less'
 import SearchPlayList from './playList'
 
-import { mapStateToProps, mapDispatchToProps } from '@/redux/dispatch'
 function SearchList(props) {
     const navigate = useNavigate()
     // console.log(props.user, 'props.user');
@@ -125,4 +124,4 @@ function SearchList(props) {
         </div>
     </div>
 }
-export default connect(mapStateToProps, mapDispatchToProps)(SearchList)
+export default SearchList

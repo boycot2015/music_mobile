@@ -116,7 +116,7 @@ function Home() {
             }} className={'music-grid'}
             gap={8}>
              {
-                 state.privatecontent.slice(0, 2).map(el =>
+                 state.privatecontent.slice(0, 4).map(el =>
                  <Grid.Item key={el.id}>
                     <MusicItem type={1} data={el} />
                   </Grid.Item>
@@ -149,7 +149,7 @@ function Home() {
         {/* 宝藏曲库 */}
         <h3 className='title clearfix'>
             宝藏曲库
-            <Button className='more fr' size="mini" onClick={() => navigate('/custom/list', {state: {type: 1, title: '宝藏曲库'}})} shape='rounded'>
+            <Button className='more fr' size="mini" onClick={() => navigate('/custom/list', {state: {type: 2, title: '宝藏曲库'}})} shape='rounded'>
                 更多 <RightOutline />
             </Button>
         </h3>
@@ -160,7 +160,7 @@ function Home() {
             }} className={'music-grid'}
             gap={8}>
              {
-                 state.privatecontent.slice(2, 6).map(el =>
+                 state.privatecontent.slice(28, 32).map(el =>
                  <Grid.Item key={el.id}>
                     <MusicItem type={1} data={el} />
                   </Grid.Item>

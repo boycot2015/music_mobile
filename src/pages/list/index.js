@@ -22,11 +22,11 @@ function CategoryList() {
         playlists: [],
         categories: [],
         cateList: [],
-        params: { ...query },
+        params: { ...query, limit: 24 },
         hotCateList: []
     })
     const fetchData = (params) => {
-        return getPlaylist({...query, ...state.params, limit: 24, order: 'hot', ...params }).then(res => {
+        return getPlaylist({...query, ...state.params, limit: state.params.limit, order: 'hot', ...params }).then(res => {
             if (res.code === 200) {
                 if (state.params.offset) {
                     setState({
@@ -63,7 +63,7 @@ function CategoryList() {
         })
     }
     const loadMore = () =>  {
-        return fetchData({offset: state.params.offset })
+        return fetchData({offset: (state.params.offset || 0) * (state.params.limit || 24) })
     }
     const handleCateChange = (key) => {
         setState({

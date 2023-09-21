@@ -16,21 +16,24 @@ const filterComment = (comments) => {
     let arr = []
     comments.map(el => {
         if (el.parentCommentId && el.beReplied?.length) {
-            const { beReplied, time, likedCount, ...others } = el
+            const { beReplied, time, timeStr, likedCount, ...others } = el
             let existIndex = arr.findIndex(ele => ele.beRepliedCommentId === el.parentCommentId)
             if (existIndex > -1) {
                 arr[existIndex]?.beReplied.push({
                     time,
+                    timeStr,
                     ...others
                 })
             } else {
                 arr.push({
                     time,
+                    timeStr,
                     ...beReplied[0],
                     ...beReplied[0]?.user,
                     likedCount,
                     beReplied: [{
                         time,
+                        timeStr,
                         ...others
                     }]
                 })
@@ -39,8 +42,12 @@ const filterComment = (comments) => {
             arr.push(el)
         }
     })
+    console.log(arr, 'arr');
     return arr
 }
+// const sortArray = (arr, key = 'beRepliedCommentId') => {
+//     return arr.filter((el, index, self) => self.findIndex(val => el[key] === val[key]) === index)
+// }
 function CommentList(props) {
     const location = useLocation()
     const { state: query } = location
@@ -52,7 +59,8 @@ function CommentList(props) {
         commentList: [],
         hotComments: [],
         currentCommit: {},
-        offset: 0
+        offset: 0,
+        limit: 20
     })
     const [hasMore, setHasMore] = useState(true)
     const [showRepeat, setShowRepeat] = useState(false);
@@ -61,7 +69,7 @@ function CommentList(props) {
         return fetchData({offset: state.offset })
     }
     const fetchData = (params) => {
-        return getComment({id: song.id || query.id, limit: 20, ...params }).then(res => {
+        return getComment({id: song.id || query.id, limit: state.limit, ...params, offset: ++(params.offset) * state.limit }).then(res => {
             if (res.code === 200) {
                 let {ar, al, name, ...others } = {...songs.filter(el => el.id === song.id)[0]}
                 setState({

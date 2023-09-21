@@ -29,7 +29,7 @@ function UserItem(props) {
         <div className="userinfo flex4 flexbox-h">
             <div className="text flexbox-v">
                 <div className="nickname">{props.user?.nickname || props?.nickname}</div>
-                {props.time && <div className="time">{new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>}
+                {props.time && <div className="time">{props.timeStr || new Date(props.time).toLocaleString()?.split(' ')[0]?.split('/')?.join('-')}</div>}
             </div>
             {state.likedCount >= 0 && <div onClick={() => {
                 setIsLiked(!isLiked)

@@ -18,11 +18,10 @@ function SearchPlayList(props) {
         params: { ...query || {}, ...props.query },
     })
     const fetchData = (params) => {
-        params = {type: 1, limit: 24, order: 'hot', ...state.params, ...params }
+        params = {type: 1, limit: 24, order: 'hot', offset: 0, ...state.params, ...params }
         return http('get', props.url || '/cloudsearch', params).then(res => {
             if (res.code === 200) {
                 let key = (params.key || 'playlist') + 's'
-                // console.log(params, key, 'state.params');
                 if (state.params.offset) {
                     setState({
                         ...state,
@@ -52,17 +51,17 @@ function SearchPlayList(props) {
         return fetchData({offset: state.params.offset })
     }
     useEffect(() => {
-        setState({
+        setState(() => ({
             ...state,
             offset: 0,
             playlists: [],
-        })
+        }))
         fetchData({...query, offset: 0})
     }, [query.keywords]);
     const { type = 1 } = props.query
     const isVideo = type == 1004 || type == 1014
     return <>
-        {(state.playlists && state.playlists.length) ? (type === 1 || type === 1006) ? <PlayList songIds={state.playlists.map(el => el.id)} emptyText={'暂无数据'} ref={playListRef} /> : <div className="play-list">
+        {(state.playlists && state.playlists.length) ? (type === 1 || type === 1006) ? <PlayList refresh={!!query.keywords} songIds={state.playlists.map(el => el.id)} emptyText={'暂无数据'} ref={playListRef} /> : <div className="play-list">
             {<Grid
                 columns={type === 1002 ? 2 : isVideo ? 1 : 3}
                 style={{

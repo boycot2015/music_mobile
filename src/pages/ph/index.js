@@ -75,7 +75,7 @@ function CustomList() {
                 {(state.recommend && state.recommend.length) ? <Grid
                     columns={3}
                     style={{
-                        padding: '0 0 0 10px '
+                        padding: '0 10px'
                     }} className={'music-list'}
                     gap={8}>
                     {

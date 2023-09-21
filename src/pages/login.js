@@ -116,7 +116,7 @@ function Login(props) {
             >
                 <Form.Header>
                     {/* /logo512.png */}
-                    <Image onClick={() => NavigateTo('/')} style={{height: '2rem', width: '2rem', margin: '2rem auto 2rem'}} src={'/logo512.png'} />
+                    <Image onClick={() => NavigateTo('/')} style={{height: '2rem', width: '2rem', margin: '2rem auto 2rem'}} src={'/favicon.ico'} />
                 </Form.Header>
                 <Form.Item label='手机号' style={{textAlign: 'right'}} name='phone'>
                     <Input clearable placeholder='请输入手机号' maxLength={11} />
